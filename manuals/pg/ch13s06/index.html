@@ -1,0 +1,581 @@
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="index, follow"><link rel="icon shortcut" href=/gtmdoc-mumps.pl/favicon.ico sizes=32x32><link rel=icon href=/gtmdoc-mumps.pl/favicon.svg type=image/svg+xml id=favicon-svg><link rel=icon href=/gtmdoc-mumps.pl/favicon-16x16.png type=image/png sizes=16x16><link rel=icon href=/gtmdoc-mumps.pl/favicon-32x32.png type=image/png sizes=32x32><link rel=apple-touch-icon href=/gtmdoc-mumps.pl/apple-touch-icon.png sizes=180x180><link fetchpriority=low href=/gtmdoc-mumps.pl/site.webmanifest rel=manifest><title>Error Actions – GT.M Documentation</title><meta name=description content="Error Actions In the following examples (and the previous one as well), $ETRAP and $ZTRAP in most cases have similar behavior. The most prominent difference is that, when $ETRAP is active, $ECODE determines whether or not a second error in an M stack level triggers an immediate implicit QUIT from that level. For additional information, see the sections on $ECODE and $ETRAP in Chapter8: “Intrinsic Special Variables”. Because of the effect of $ECODE on the processing flow when $ETRAP is active, there is a benefit to including appropriate $ECODE maintenance in $ZTRAP related code, so that things stay well behaved when the two mechanisms are intemixed. Other differences are discussed in some of the examples."><link rel=canonical href=https://szydell.github.io/gtmdoc-mumps.pl/manuals/pg/ch13s06/ itemprop=url><meta property="og:title" content="Error Actions"><meta property="og:description" content="
+    
+      Error Actions
+    In the following examples (and the previous one as well), $ETRAP and $ZTRAP in most cases have similar behavior. The most prominent difference is that, when $ETRAP is active, $ECODE determines whether or not a second error in an M stack level triggers an immediate implicit QUIT from that level. For additional information, see the sections on $ECODE and $ETRAP in Chapter8: “Intrinsic Special Variables”. Because of the effect of $ECODE on the processing flow when $ETRAP is active, there is a benefit to including appropriate $ECODE maintenance in $ZTRAP related code, so that things stay well behaved when the two mechanisms are intemixed. Other differences are discussed in some of the examples.
+    
+  "><meta property="og:type" content="
+    article
+  "><meta property="og:url" content="https://szydell.github.io/gtmdoc-mumps.pl/manuals/pg/ch13s06/"><meta property="article:section" content="manuals"><meta itemprop=name content="Error Actions"><meta itemprop=description content="Error Actions In the following examples (and the previous one as well), $ETRAP and $ZTRAP in most cases have similar behavior. The most prominent difference is that, when $ETRAP is active, $ECODE determines whether or not a second error in an M stack level triggers an immediate implicit QUIT from that level. For additional information, see the sections on $ECODE and $ETRAP in Chapter8: “Intrinsic Special Variables”. Because of the effect of $ECODE on the processing flow when $ETRAP is active, there is a benefit to including appropriate $ECODE maintenance in $ZTRAP related code, so that things stay well behaved when the two mechanisms are intemixed. Other differences are discussed in some of the examples."><meta itemprop=wordCount content="4671"><meta name=twitter:card content="summary"><meta name=twitter:title content="Error Actions"><meta name=twitter:description content="Error Actions In the following examples (and the previous one as well), $ETRAP and $ZTRAP in most cases have similar behavior. The most prominent difference is that, when $ETRAP is active, $ECODE determines whether or not a second error in an M stack level triggers an immediate implicit QUIT from that level. For additional information, see the sections on $ECODE and $ETRAP in Chapter8: “Intrinsic Special Variables”. Because of the effect of $ECODE on the processing flow when $ETRAP is active, there is a benefit to including appropriate $ECODE maintenance in $ZTRAP related code, so that things stay well behaved when the two mechanisms are intemixed. Other differences are discussed in some of the examples."><link rel=preload href=/gtmdoc-mumps.pl/css/compiled/main.min.1a431501cdeb52323c920e7761f7d9e327b2bee53160196c4bd1d34a3fd9fbc9.css as=style integrity="sha256-GkMVAc3rUjI8kg53YffZ4yeyvuUxYBlsS9HTSj/Z+8k="><link href=/gtmdoc-mumps.pl/css/compiled/main.min.1a431501cdeb52323c920e7761f7d9e327b2bee53160196c4bd1d34a3fd9fbc9.css rel=stylesheet integrity="sha256-GkMVAc3rUjI8kg53YffZ4yeyvuUxYBlsS9HTSj/Z+8k="><script src=/gtmdoc-mumps.pl/js/main-head.min.94da6f95b126542222dab3a6e07ffefe1aaf63ec3ca555e827b58b80e7d3f0b7.js integrity="sha256-lNpvlbEmVCIi2rOm4H/+/hqvY+w8pVXoJ7WLgOfT8Lc="></script><style>.gtm-logo{width:32px;height:32px}:root{--gtm-bg:#111111;--gtm-fg:#ffffff}.dark,[data-theme=dark]{--gtm-bg:#f3f3f3;--gtm-fg:#111111}@media(prefers-color-scheme:dark){:root{--gtm-bg:#f3f3f3;--gtm-fg:#111111}}.logo-bg{fill:var(--gtm-bg)}.logo-fg{fill:none;stroke:var(--gtm-fg);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}a.gtm-html,a.gtm-pdf{display:inline-block;padding:.1rem .45rem;border-radius:4px;font-size:.7rem;font-weight:600;text-decoration:none!important;border:1px solid;margin-left:.35rem;vertical-align:middle;line-height:1.6;transition:background .15s,color .15s}a.gtm-html{color:#005a9c;border-color:#005a9c}a.gtm-html:hover{background:#005a9c;color:#fff}a.gtm-pdf{color:#b91c1c;border-color:#b91c1c}a.gtm-pdf:hover{background:#b91c1c;color:#fff}.dark a.gtm-html{color:#60a5fa;border-color:#60a5fa}.dark a.gtm-html:hover{background:#60a5fa;color:#0f172a}.dark a.gtm-pdf{color:#f87171;border-color:#f87171}.dark a.gtm-pdf:hover{background:#f87171;color:#0f172a}</style></head><body><a href=#content class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">Skip to content</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden"><div class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"></div><nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6"><a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href=/gtmdoc-mumps.pl/><span class=hx:mr-2 aria-hidden=true style=display:inline-flex;align-items:center><svg class="gtm-logo" viewBox="0 0 64 64" role="img" aria-label="GT.M"><rect x="4" y="4" width="56" height="56" rx="14" fill="var(--gtm-bg, #111111)"/><polyline points="12,29 19,19 26,29" fill="none" stroke="var(--gtm-fg, #ffffff)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</span><span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">GT.M Documentation</span></a><div class="hx:flex hx:justify-items-start hx:group" data-theme=light><button title="Change theme" data-state=closed data-location=top class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:p-2 hx:grow" type=button aria-label="Change theme" aria-expanded=false aria-haspopup=menu><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="24" class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728.0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><svg height="24" class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003.0 0012 21a9.003 9.003.0 008.354-5.646z"/></svg><svg height="24" class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M11.996094 2C6.4986225 2.0192368 2.03125 6.5024993 2.03125 12c0 5.497501 4.4673725 9.980763 9.964844 10H12 12.0039c5.497471-.01924 9.964844-4.502499 9.964844-10 0-5.4975007-4.467373-9.9807632-9.964844-10H12zM12 4c4.417218.017598 7.96875 3.5822356 7.96875 8 0 4.417764-3.551532 7.982402-7.96875 8z"/></svg></div></button><ul class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;margin:0;min-width:100px" data-theme=light role=menu><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=true tabindex=-1 data-item=light class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+Light
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=dark class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+Dark
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=system class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+System
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li></ul></div><button type=button aria-label=Menu aria-expanded=false class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"/></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"/></g></svg></button></nav></div><div class='hx:mx-auto hx:flex hextra-max-page-width'><aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:hidden"><div class="hx:px-4 hx:pt-4 hx:md:hidden"><div class="hextra-search-wrapper hx:relative hx:md:w-64"><div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300"><input placeholder=Search... aria-label=Search... class="hextra-search-input hx:hextra-focus-visible hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus-visible:bg-white hx:dark:focus-visible:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current" type=search autocomplete=off spellcheck=false>
+<kbd class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex">CTRL K</kbd></div><div><ul class="hextra-search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]" aria-label="Search results" style="transition:max-height .2s ease 0s"></ul><div class="hextra-search-status hx:sr-only" aria-live=polite role=status></div></div></div></div><div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]"><ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden"></ul></div><div class="hx:md:hidden hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation=show><div class="hx:flex hx:grow hx:flex-col"><div class="hx:flex hx:justify-items-start hx:group" data-theme=light><button title="Change theme" data-state=closed data-location=bottom class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow" type=button aria-label="Change theme" aria-expanded=false aria-haspopup=menu><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="12" class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728.0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Light</span><svg height="12" class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003.0 0012 21a9.003 9.003.0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Dark</span><svg height="12" class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M11.996094 2C6.4986225 2.0192368 2.03125 6.5024993 2.03125 12c0 5.497501 4.4673725 9.980763 9.964844 10H12 12.0039c5.497471-.01924 9.964844-4.502499 9.964844-10 0-5.4975007-4.467373-9.9807632-9.964844-10H12zM12 4c4.417218.017598 7.96875 3.5822356 7.96875 8 0 4.417764-3.551532 7.982402-7.96875 8z"/></svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">System</span></div></button><ul class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;margin:0;min-width:100px" data-theme=light role=menu><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=true tabindex=-1 data-item=light class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+Light
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=dark class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+Dark
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=system class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+System
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li></ul></div></div></div></aside><nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="Table of contents"><div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">On this page</p><ul><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#error-actions>Error Actions</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#break-on-an-error>Break on an Error</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#unconditional-transfer-on-an-error>Unconditional Transfer on an Error</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#setting-ztrap-for-each-level>Setting $ZTRAP for Each Level</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#nested-error-handling>Nested Error Handling</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#terminating-execution-on-an-error>Terminating Execution on an Error</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#setting-ztrap-to-other-actions>Setting $ZTRAP to Other Actions</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#summary-of-etrap--ztrap-error-handling-options>Summary of $ETRAP & $ZTRAP Error-Handling Options</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#errors-in-ztrap>Errors in $ZTRAP</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#recording-information-about-errors>Recording Information about Errors</a></li><li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6"><a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href=#program-to-record-information-on-an-error-using-ztrap>Program to Record Information on an Error using $ZTRAP</a></li></ul><div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><button id=backToTop tabindex=-1 onclick=scrollUp() class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+<span>Scroll to top</span>
+<svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"/></svg></button></div></div></nav><article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]"><main id=content class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12"><br class="hx:mt-1.5 hx:text-sm"><h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">Error Actions</h1><div class=hx:mb-16></div><div class=content><h2>Error Actions<span class="hx:absolute hx:-mt-20" id=error-actions></span>
+<a href=#error-actions class=subheading-anchor aria-label="Permalink for this section"></a></h2><p>In the following examples (and the previous one as well), $ETRAP and $ZTRAP in most cases have similar behavior. The most prominent difference is that, when $ETRAP is active, $ECODE determines whether or not a second error in an M stack level triggers an immediate implicit QUIT from that level. For additional information, see the sections on $ECODE and $ETRAP in <a href=ch08.html title="Chapter8.Intrinsic Special Variables">Chapter8: “<em>Intrinsic Special Variables</em>”</a>. Because of the effect of $ECODE on the processing flow when $ETRAP is active, there is a benefit to including appropriate $ECODE maintenance in $ZTRAP related code, so that things stay well behaved when the two mechanisms are intemixed. Other differences are discussed in some of the examples.</p><h3>Break on an Error<span class="hx:absolute hx:-mt-20" id=break-on-an-error></span>
+<a href=#break-on-an-error class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>When $ZTRAP is set to a BREAK command and an error occurs, GT.M puts the process into Direct Mode. The default for $ZTRAP is a BREAK command. When developing a program, $ZTRAP=&ldquo;BREAK&rdquo; allows you to investigate the cause of the error from Direct Mode. For information on GT.M debugging tools, see <a href=ch04.html title="Chapter4.Operating and Debugging in Direct Mode">Chapter4: “<em>Operating and Debugging in Direct Mode</em>”</a>.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;zprint ^EP1
+EP1    WRITE !,&#34;THIS IS &#34;_$TEXT(&#43;0) 
+       KILL A 
+BAD    WRITE A 
+       WRITE !,&#34;THIS IS NOT DISPLAYED&#34; 
+       QUIT 
+ 
+GTM&gt;do ^EP1
+THIS IS EP1%GTM-E-UNDEF, Undefined local variable: A
+                At M source location BAD^EP1
+GTM&gt;ZSHOW
+BAD^EP1    ($ZTRAP)
+    (Direct mode) 
+&#43;1^GTM$DMOD    (Direct mode) 
+GTM&gt;QUIT
+GTM&gt;ZSHOW
+EP1&#43;1^EP1    (Direct mode) 
+&#43;1^GTM$DMOD    (Direct mode) 
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>Because by default $ETRAP="" and $ZTRAP=&ldquo;B&rdquo;, this example does not explicitly set either $ETRAP or $ZTRAP. When the routine encounters an error at BAD^EP1, GT.M initiates Direct Mode. The ZSHOW displays the M stack that has, at the bottom, the base Direct Mode frame and, at the top, EP1 with a notation that $ZTRAP has been invoked. The QUIT command at the prompt removes EP1 from the stack.</p><p>To prevent a program such as a production image from accessing Direct Mode, assign an action other than &ldquo;BREAK&rdquo; to $ETRAP or $ZTRAP. The following sections discuss various alternative values for $ETRAP or $ZTRAP.</p><p>In order to prevent inappropriate access to Direct Mode, eliminate all BREAKs from the production code. If the code contains BREAK commands, the commands should be subject to a postconditional flag that is only turned on for debugging. ZBREAK serves as an alternative debugging tool that effects only the current process and lasts only for the duration of an image activation.</p><h3>Unconditional Transfer on an Error<span class="hx:absolute hx:-mt-20" id=unconditional-transfer-on-an-error></span>
+<a href=#unconditional-transfer-on-an-error class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>The GOTO command instructs GT.M to transfer execution permanently to another line within the routine or to another routine. When stopping to investigate an error is undesirable, use the GOTO command in $ETRAP or $ZTRAP to continue execution at some other point.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP2
+EP2     WRITE !,&#34;THIS IS &#34;_$TEXT(&#43;0) 
+        SET $ECODE=&#34;&#34;        ;this affects only $ETRAP 
+        SET $ETRAP=&#34;GOTO ET&#34;        ;this implicitly stacks $ZTRAP 
+        ;N $ZT S $ZT=&#34;GOTO ET&#34;  ;would give a similar result 
+        DO SUB1 
+        WRITE !,&#34;THIS IS THE END&#34; 
+        QUIT 
+SUB1    WRITE !,&#34;THIS IS SUB1&#34; 
+        DO SUB2 
+        QUIT 
+SUB2    WRITE !,&#34;THIS IS SUB2&#34; 
+        KILL A 
+BAD     WRITE A 
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34; 
+        QUIT 
+ET      ;SET $ZTRAP=&#34;&#34;         ;if using $ZTRAP to prevent recursion 
+        WRITE !,&#34;CONTINUING WITH ERROR TRAP AFTER AN ERROR&#34; 
+        WRITE !,&#34;$STACK: &#34;,$STACK 
+        WRITE !,&#34;$STACK(-1): &#34;,$STACK(-1) 
+        WRITE !,&#34;$ZLEVEL: &#34;,$ZLEVEL 
+        FOR I=$STACK(-1):-1:1 DO 
+        . WRITE !,&#34;LEVEL: &#34;,I 
+        . SET K=10 
+        . FOR J=&#34;PLACE&#34;,&#34;MCODE&#34;,&#34;ECODE&#34; DO 
+        . . WRITE ?K,&#34; &#34;,J,&#34;: &#34;,$STACK(I,J) 
+        . . SET K=K&#43;20 
+        WRITE !,$ZSTATUS,!  
+        ZSHOW &#34;S&#34; 
+        SET $ECODE=&#34;&#34;        ;this affects only $ETRAP 
+        QUIT 
+ 
+GTM&gt;do ^EP2
+THIS IS EP2
+THIS IS SUB1
+THIS IS SUB2
+CONTINUING WITH ERROR TRAP AFTER AN ERROR
+$STACK: 3
+$STACK(-1): 3
+$ZLEVEL: 4
+LEVEL: 3   PLACE: BAD^EP2      MCODE: BAD     WRITE A  ECODE: ,M6,Z150373850,
+LEVEL: 2   PLACE: SUB1&#43;1^EP2   MCODE:         DO SUB2  ECODE: 
+LEVEL: 1   PLACE: EP2&#43;4^EP2    MCODE:         DO SUB1  ECODE: 
+150373850,BAD^EP2,%GTM-E-UNDEF, Undefined local variable: A
+ET&#43;12^EP2
+SUB1&#43;1^EP2
+EP2&#43;4^EP2
+&#43;1^GTM$DMOD    (Direct mode) 
+THIS IS THE END
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This routine specifies a GOTO command transferring execution to the ET label when an error occurs. The $ZLEVEL special variable contains an integer indicating the M stack level.</p><p>The ZGOTO command is similar to the GOTO command, however, the ZGOTO allows the removal of multiple levels from the program stack. ZGOTO can ensure that execution returns to a specific point, such as a menu.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP3
+EP3     ;
+MENU    WRITE !,&#34;THIS IS MENU IN &#34;,$TEXT(0) 
+        SET $ECODE=&#34;&#34;        ;this affects only $ETRAP 
+        SET $ETRAP=&#34;SET $ECODE=&#34;&#34;&#34;&#34; ZGOTO 2&#34; 
+        ;N $ZT S $ZT=&#34;ZGOTO 2&#34; ;would give a similar result 
+        DO SUB1 
+        WRITE !,&#34;`MENU&#39; AFTER $ETRAP&#34; 
+        WRITE !,&#34;$STACK: &#34;,$STACK 
+        WRITE !,&#34;$ZLEVEL: &#34;,$ZLEVEL 
+        QUIT 
+SUB1    WRITE !,&#34;THIS IS SUB1&#34; 
+        DO SUB2 
+        WRITE !,&#34;THIS IS SKIPPED BY ZGOTO&#34; 
+        QUIT 
+SUB2    WRITE !,&#34;THIS IS SUB2&#34; 
+        KILL A 
+BAD     WRITE A 
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34; 
+        QUIT 
+ 
+GTM&gt;do ^EP3
+THIS IS MENU IN 
+THIS IS SUB1
+THIS IS SUB2
+`MENU&#39; AFTER $ETRAP
+$STACK: 1
+$ZLEVEL: 2</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This routine instructs GT.M to reset the execution to level 2 if it encounters an error. GT.M removes all intermediate levels.</p><p>In general, coding ZGOTO level information based on $ZLEVEL provides a more robust technique than the &ldquo;hard-coding&rdquo; shown in the previous example.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP4
+EP4     WRITE !,&#34;THIS IS &#34;_$TEXT(&#43;0) 
+        SET $ECODE=&#34;&#34;        ;this affects only $ETRAP 
+        DO MAIN 
+        WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0),&#34; AFTER THE ERROR&#34; 
+        WRITE !,&#34;$ZLEVEL: &#34;,$ZLEVEL 
+        QUIT 
+MAIN    WRITE !,&#34;THIS IS MAIN&#34; 
+        WRITE !,&#34;$ZLEVEL: &#34;,$ZLEVEL 
+        SET $ETRAP=&#34;ZGOTO &#34;_$ZLEVEL_&#34;:ET&#34; 
+        ;N $ZT S $ZT=&#34;ZGOTO &#34;_$ZLEVEL_&#34;:ET ;alternative 
+        DO SUB1 
+        QUIT 
+SUB1    WRITE !,&#34;THIS IS SUB1&#34; 
+        WRITE !,&#34;$ZLEVEL: &#34;,$ZLEVEL 
+        DO SUB2 
+        QUIT 
+SUB2    WRITE !,&#34;THIS IS SUB2&#34; 
+        WRITE !,&#34;$ZLEVEL :&#34;,$ZLEVEL 
+        KILL A 
+BAD     WRITE A 
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34; 
+        QUIT 
+ET     ;SET $ZTRAP=&#34;&#34; ;if using $ZTRAP to prevent recursion 
+        WRITE !,&#34;CONTINUING WITH ERROR TRAP AFTER AN ERROR&#34; 
+        WRITE !,&#34;$STACK: &#34;,$STACK 
+        WRITE !,&#34;$STACK(-1): &#34;,$STACK(-1) 
+        WRITE !,&#34;$ZLEVEL: &#34;,$ZLEVEL 
+        FOR I=$STACK(-1):-1:1 DO 
+        . WRITE !,&#34;LEVEL: &#34;,I 
+        . SET K=10 
+        . FOR J=&#34;PLACE&#34;,&#34;MCODE&#34;,&#34;ECODE&#34; DO 
+        . . WRITE ?K,&#34; &#34;,J,&#34;: &#34;,$STACK(I,J) 
+        . . SET K=K&#43;20 
+        WRITE !,$ZSTATUS,!
+        ZSHOW &#34;S&#34; 
+        SET $ECODE=&#34;&#34;        ;this affects only $ETRAP 
+        QUIT 
+ 
+GTM&gt;do ^EP4
+THIS IS EP4
+THIS IS MAIN
+$ZLEVEL: 3
+THIS IS SUB1
+$ZLEVEL: 4
+THIS IS SUB2
+$ZLEVEL :5
+CONTINUING WITH ERROR TRAP AFTER AN ERROR
+$STACK: 2
+$STACK(-1): 4
+$ZLEVEL: 3
+LEVEL: 4   PLACE: BAD^EP4      MCODE: BAD     WRITE A  ECODE: ,M6,Z150373850,
+LEVEL: 3   PLACE: SUB1&#43;2^EP4   MCODE:         DO SUB2  ECODE: 
+LEVEL: 2   PLACE: MAIN&#43;4^EP4   MCODE:         DO SUB1  ECODE: 
+LEVEL: 1   PLACE: EP4&#43;2^EP4    MCODE:         DO MAIN  ECODE: 
+150373850,BAD^EP4,%GTM-E-UNDEF, Undefined local variable: A
+ET&#43;12^EP4
+EP4&#43;2^EP4
+&#43;1^GTM$DMOD    (Direct mode) 
+THIS IS EP4 AFTER THE ERROR
+$ZLEVEL: 2
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This routine sets $ETRAP or $ZTRAP to a ZGOTO specifying the current level. When the routine encounters an error at label BAD, GT.M switches control to label ET at the level where $ETRAP (or $ZTRAP) was established. At this point in the execution, ET replaces SUB1+2^EP4 as the program stack entry for the level specified, that is, $ZLEVEL=3. The QUIT command then returns control to the level where $ZLEVEL=2.</p><h3>Setting $ZTRAP for Each Level<span class="hx:absolute hx:-mt-20" id=setting-ztrap-for-each-level></span>
+<a href=#setting-ztrap-for-each-level class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>The command NEW $ETRAP or NEW $ZTRAP stacks the current value of $ETRAP or $ZTRAP respectively and, in the case of $ZTRAP, sets the value equal to the empty string. Normally, a SET $ETRAP or $ZTRAP immediately follows a NEW $ETRAP or $ZTRAP. When GT.M encounters a QUIT command that leaves a level where $ETRAP or $ZTRAP had been NEWed, GT.M deletes any value set to the ISV after the NEW command and restores the value that the ISV held previous to the NEW. NEW $ETRAP or $ZTRAP enables the construction of error handlers corresponding to the nesting of routines. A SET $ETRAP or $ZTRAP implicitly NEWs the other variable if it does not already have the value of the empty string. This enables the interleaving of $ETRAP and $ZTRAP at different levels, although (as mentioned above) such interleaving requires that $ZTRAP handlers deal appropriately with $ECODE.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP5
+EP5     WRITE !,&#34;THIS IS &#34;_$TEXT(&#43;0)
+        SET $ECODE=&#34;&#34;;this affects only $ETRAP
+        WRITE !,&#34;STARTING $ETRAP: &#34;,$ETRAP
+        WRITE !,&#34;STARTING $ZTRAP: &#34;,$ZTRAP
+        DO SUB1
+        WRITE !,&#34;ENDING $ETRAP: &#34;,$ETRAP
+        WRITE !,&#34;ENDING $ZTRAP: &#34;,$ZTRAP
+        QUIT
+MAIN    WRITE !,&#34;THIS IS MAIN&#34;
+        WRITE !,&#34;$ZLEVEL: &#34;,$ZLEVEL
+        DO SUB1
+        QUIT
+SUB1    WRITE !,&#34;THIS IS SUB1&#34;
+        NEW $ETRAP SET $ETRAP=&#34;GOTO ET1&#34;
+        ;NEW $ZTRAP SET $ZTRAP=&#34;GOTO ET1&#34; ;alternative
+        WRITE !,&#34;$ETRAP FOR SUB1: &#34;,$ETRAP
+        KILL A
+BAD     WRITE A
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+ET1     WRITE !,&#34;ERROR TRAP 1&#34;
+        WRITE !,&#34;$ETRAP AFTER THE TRAP: &#34;,$ETRAP
+        WRITE !,&#34;$ZTRAP AFTER THE TRAP: &#34;,$ZTRAP
+        SET $ECODE=&#34;&#34;;this affects only $ETRAP
+        QUIT
+ 
+GTM&gt;do ^EP5
+THIS IS EP5
+STARTING $ETRAP: 
+STARTING $ZTRAP: B
+THIS IS SUB1
+$ETRAP FOR SUB1: GOTO ET1
+ERROR TRAP 1
+$ETRAP AFTER THE TRAP: GOTO ET1
+$ZTRAP AFTER THE TRAP: 
+ENDING $ETRAP: 
+ENDING $ZTRAP: B
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>At SUB1, this routine NEWs $ETRAP and assigns it a value, which implicitly NEWs $ZTRAP. When the routine encounters an error at the SUB1 level, GT.M transfers control to label ET1 without modifying the value of $ETRAP or $ZTRAP. When the routine encounters a QUIT command in routine ET1, GT.M transfers control to the command after the DO that invoked ET1 and restores $ETRAP or $ZTRAP to the values they held before the NEW and the SET.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>[Note]</td><td>Note</td></tr><tr><td>If the transfer to ET1 was accomplished with a ZGOTO that reduced the stack level, after the trap, $ETRAP would have the value of the empty string and $ZTRAP would be &ldquo;B&rdquo;.</td><td></td></tr></tbody></table><h3>Nested Error Handling<span class="hx:absolute hx:-mt-20" id=nested-error-handling></span>
+<a href=#nested-error-handling class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>$ETRAP or $ZTRAP set to a DO command instructs GT.M to transfer execution temporarily to another line within this or another routine when it encounters an error. A QUIT command within the scope of the DO transfers control back to the code specified by the $ETRAP or $ZTRAP. When the code in the ISV terminates due to an explicit or implicit QUIT, the behavior of $ETRAP and $ZTRAP is different. When $ETRAP is in control, the level at which the error occurred is removed, and control returns to the invoking level. When $ZTRAP contains code, execution picks up at the beginning of the line with the error. A DO command within $ZTRAP is normally used for I/O errors that an operator may resolve, because a DO command permits re-execution of the line containing the error.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP6
+EP6     WRITE !,&#34;THIS IS &#34;_$TEXT(&#43;0)
+        NEW
+        NEW $ZTRAP SET $ZTRAP=&#34;DO ET&#34;
+        SET (CB,CE)=0
+BAD     SET CB=CB&#43;1 WRITE A SET CE=CE&#43;1
+        WRITE !,&#34;AFTER SUCCESSFUL EXECUTION OF BAD:&#34;,!
+        SET A=&#34;A IS NOT DEFINED&#34;
+        ZWRITE
+        QUIT
+ET      W !,&#34;CONTINUING WITH ERROR TRAP AFTER AN ERROR&#34;,!
+        ZWRITE
+        SET A=&#34;A IS NOW DEFINED&#34;
+GTM&gt;do ^EP6
+THIS IS EP6
+CONTINUING WITH ERROR TRAP AFTER AN ERROR
+CB=1
+CE=0
+A IS NOW DEFINED
+AFTER SUCCESSFUL EXECUTION OF BAD:
+A=&#34;A IS NOT DEFINED&#34;
+CB=2
+CE=1
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This example sets $ZTRAP to a DO command. When the routine encounters an error in the middle of the line at label BAD, GT.M transfers control to label ET. After QUITting from routine ET, GT.M returns control to the beginning of the line at label BAD.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP6A
+EP6A    WRITE !,&#34;THIS IS &#34;_$TEXT(&#43;0) 
+        NEW 
+        NEW $ETRAP SET $ETRAP=&#34;GOTO ET&#34; 
+        SET (CB,CE)=0 
+BAD     SET CB=CB&#43;1 WRITE A SET CE=CE&#43;1 
+        WRITE !,&#34;AFTER SUCCESSFUL EXECUTION OF BAD:&#34;,! 
+        ZWRITE 
+        QUIT 
+ET      W !,&#34;CONTINUING WITH ERROR TRAP AFTER AN ERROR&#34;,! 
+        ZWRITE 
+        SET A=&#34;A IS NOW DEFINED&#34; 
+        SET RETRY=$STACK($STACK,&#34;PLACE&#34;) 
+        SET $ECODE=&#34;&#34; 
+        GOTO @RETRY 
+ 
+GTM&gt;DO ^EP6A
+THIS IS EP6A
+CONTINUING WITH ERROR TRAP AFTER AN ERROR
+CB=1
+CE=0
+A IS NOW DEFINED
+AFTER SUCCESSFUL EXECUTION OF BAD:
+A=&#34;A IS NOW DEFINED&#34;
+CB=2
+CE=1
+RETRY=&#34;BAD^EP6A&#34;
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This routine is an example of how $ETRAP handling can be coded to perform the same kind of resumtion of the original execution stream that occurs by default with $ZTRAP when there is no unconditional transfer of control.</p><h3>Terminating Execution on an Error<span class="hx:absolute hx:-mt-20" id=terminating-execution-on-an-error></span>
+<a href=#terminating-execution-on-an-error class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>If both $ETRAP and $ZTRAP are set to the empty string upon encountering an error, the current level is discarded and the error is reissued at the invoking level. When already at the lowest M stack level, GT.M terminates routine execution and returns control to the shell level. If $ZTRAP is used exclusively, $ZTRAP="" suppresses the unstacking of NEWed values of $ZTRAP associated with lower levels. $ETRAP values are always unstacked, however if the lowest level $ETRAP is the empty string (which it is by default when GT.M starts), GT.M performs the same termination as it does with $ZTRAP. These terminations with both ISVs empty provides a mechanism for returning to the shell with a status message when GT.M encounters an error.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP7
+EP7     WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0)
+        SET $ECODE=&#34;&#34;;this only affects $ETRAP
+        SET $ETRAP=&#34;&#34;,$ZTRAP=&#34;&#34;
+        KILL A
+BAD     WRITE A
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+ 
+GTM&gt;do ^EP7
+THIS IS EP7
+%GTM-E-UNDEF, Undefined local variable: A
+%GTM-I-RTSLOC, At M source location BAD^EP7
+$</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>GT.M issues a message describing the M error and releases control to the shell.</p><p>When the action specified by $ZTRAP results in another run-time error before changing the value of $ZTRAP, the routine may iteratively invoke $ZTRAP until a stack overflow terminates the GT.M image. SETting $ZTRAP="" at the beginning of error processing ensures that this type of infinite loop does not occur. Because $ETRAP is implicitly followed by a QUIT it does not have the tendency to recurse. While $ETRAP is resistant to recursion, it is not completely immune, because a GOTO or a ZGOTO within the same level can evade the implicit QUIT. $ETRAP error handling involving errors on more than one stack level can also be induced to recurse if $ECODE is inappropriately cleared before the errors at all levels have been properly dealt with.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP8
+EP8     WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0)
+        NEW $ZTRAP SET $ZTRAP=&#34;DO ET&#34;
+        KILL A
+BAD     WRITE A
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+ET      WRITE 2/0
+        QUIT
+ 
+GTM&gt;DO ^EP8
+THIS IS EP8
+%GTM-E-STACKCRIT, Stack space critical
+%GTM-E-ERRWZTRAP, Error while processing $ZTRAP
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>When the routine encounters an error at label BAD, GT.M transfers control to label ET. When the routine encounters an error at label ET, it recursively does ET until a stack overflow condition terminates the GT.M image.</p><p>A set $ZTRAP="" command as soon as the program enters an error-handling routine prevents this type of &ldquo;infinite&rdquo; recursion.</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;zprint ^EP8A
+EP8A    WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0)
+        SET $ECODE=&#34;&#34;
+        SET $ZTRAP=&#34;&#34;,$ETRAP=&#34;DO ET&#34;
+        KILL A
+BAD     WRITE A
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+ET      WRITE !,&#34;CONTINUING WITH ERROR TRAP AFTER AN ERROR&#34;
+        ZSHOW &#34;S&#34;
+        WRITE !,&#34;HERE COMES AN ERROR IN THE TRAP CODE&#34;
+        WRITE 2/0
+        QUIT
+ 
+GTM&gt;DO ^EP8A
+THIS IS EP8A
+CONTINUING WITH ERROR TRAP AFTER AN ERRORET&#43;1^EP8A
+BAD^EP8A    ($ZTRAP)
+&#43;1^GTM$DMOD    (Direct mode) 
+HERE COMES AN ERROR IN THE TRAP CODE
+%GTM-E-DIVZERO, Attempt to divide by zero
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This demonstrates how $ETRAP behavior in this circumstance is more appropriate. Note that the $ZTRAP="" at the lowest level, prevents exection from returning to Direct Mode when the initial value of $ZTRAP (&ldquo;B&rdquo;) is unstacked; this step takes $ZTRAP out of the equation and should be part of initialization when the intention is to use $ETRAP exclusively.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP9
+EP9     WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0)
+        SET $ZTRAP=&#34;DO ET&#34;
+        KILL A
+BAD     WRITE A
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+ET      SET $ZT=&#34;&#34;
+        WRITE !,&#34;THIS IS THE ERROR TRAP&#34;
+ERROR   WRITE !,&#34;HERE COMES AN ERROR IN THE ERROR TRAP&#34;
+        WRITE 2/0
+        QUIT
+ 
+GTM&gt;DO ^EP9
+THIS IS EP9
+THIS IS THE ERROR TRAP
+HERE COMES AN ERROR IN THE ERROR TRAP
+%GTM-E-DIVZERO, Attempt to divide by zero
+%GTM-I-RTSLOC,                 At M source location ERROR&#43;1^EP9
+$</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This routine sets the value of $ZTRAP to null as soon as the program enters the error handler. This insures program termination when an error occurs in the error handler.</p><h3>Setting $ZTRAP to Other Actions<span class="hx:absolute hx:-mt-20" id=setting-ztrap-to-other-actions></span>
+<a href=#setting-ztrap-to-other-actions class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>The QUIT, HALT and ZHALT commands also serve as useful $ETRAP or $ZTRAP actions.</p><p>The QUIT command terminates execution at that invocation level.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;zprint ^EP10
+EP10    WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0)
+        SET $ECODE=&#34;&#34;;this affects only $ETRAP
+        S $ET=&#34;S $EC=&#34;&#34;&#34;&#34; Q&#34; ;this implicitly stacks $ZTRAP
+        ;N $ZT S $ZT=&#34;QUIT&#34; ;would give a similar result
+        DO SUB1
+        QUIT
+SUB1    WRITE !,&#34;THIS IS SUB1&#34;
+        DO SUB2
+        WRITE !,&#34;THIS IS SUB1 AFTER THE ERROR WAS &#39;IGNORED&#39;&#34;
+        QUIT
+SUB2    WRITE !,&#34;THIS IS SUB2&#34;
+        KILL A
+BAD     WRITE A
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+ 
+GTM&gt;do ^EP10
+THIS IS EP10
+THIS IS SUB1
+THIS IS SUB2
+THIS IS SUB1 AFTER THE ERROR WAS &#39;IGNORED&#39;
+GTM&gt;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>This routine sets $ETRAP or $ZTRAP to the QUIT command. When the routine encounters an error at label BAD, GT.M executes the active error handling ISV. The QUIT command terminates execution of SUB2 and transfers execution back to SUB1. The WRITE displays the error message using the $ZSTATUS special variable. Because the default behavior is to QUIT after $ETRAP code completes, this technique is mostly useful with $ETRAP as a place holder to avoid the $ETRAP="" semantics when there is no action to take at the current level. With $ZTRAP, where the default behavior is to resume execution at the beginning the line that triggered the error, the QUIT is more than a placeholder.</p><p>The HALT command terminates routine execution and returns control to the shell level. Setting $ETRAP=&ldquo;HALT&rdquo; or $ZTRAP=&ldquo;HALT&rdquo; is similar to setting the ISV to the empty string except that the &ldquo;HALT&rdquo; code does not pass the error condition code back to the shell. After a HALT, $? contains zero (0).</p><p>ZHALT acts like HALT but takes and argument, which GT.M passes back to the OS shell. Note that UNIX shells typically limit return codes to a byte, so they may truncate the value of the ZHALT argument.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^EP11
+EP11    WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0)
+        SET $ECODE=&#34;&#34;;this affects only $ETRAP
+        SET $ETRAP=&#34;HALT&#34;;this implicitly stacks $ZTRAP
+        ;SET $ZTRAP=&#34;HALT&#34;;would give a similar result
+        KILL A
+BAD     WRITE !,A
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+        
+GTM&gt;DO ^EP11
+THIS IS EP11
+$</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><h3>Summary of $ETRAP & $ZTRAP Error-Handling Options<span class="hx:absolute hx:-mt-20" id=summary-of-etrap--ztrap-error-handling-options></span>
+<a href=#summary-of-etrap--ztrap-error-handling-options class=subheading-anchor aria-label="Permalink for this section"></a></h3><table><thead><tr><th>Summary of Error-Handling Options</th><th></th></tr></thead><tbody><tr><td>ERROR-HANDLING FEATURE</td><td>DESCRIPTION AND POSSIBLE USES</td></tr><tr><td>$ETRAP=&ldquo;BREAK&rdquo; $ZTRAP=&ldquo;BREAK&rdquo;</td><td>Returns to Direct Mode upon encountering an error that enables interactive debugging to determine the nature of the error.</td></tr><tr><td>$ETRAP=&ldquo;GOTO..&rdquo; $ZTRAP=&ldquo;GOTO..&rdquo;</td><td>Transfers control upon encountering an error and allows for continuation of execution after the error. Use with an error handling routine that may record or report an error.</td></tr><tr><td>$ETRAP=&ldquo;ZGOTO..&rdquo; $ZTRAP=&ldquo;ZGOTO..&rdquo;</td><td>Similar to GOTO, but additionally allows for removal of levels from the stack. Use to allow recovery to specific point, such as a menu.</td></tr><tr><td>NEW $ETRAP NEW $ZTRAP</td><td>NEW $ETRAP stacks the old value but does not change the current value, while NEW $ZTRAP stacks the old value and sets the current value to the empty string. Usually followed by a SET $ETRAP or SET $ZTRAP. After a QUIT from a given level, GT.M restores the value held prior to the NEW. Use to enable different methods of error handling at different levels within an application.</td></tr><tr><td>$ETRAP=&ldquo;DO&mldr;&rdquo;</td><td>Transfers execution temporarily to another label upon encountering an error. After return from a DO, GT.M QUITs from the stack level at which the error occured. Whether control returns to the invoking code or to the trap handler at the less nested level, depends on the value of $ECODE.</td></tr><tr><td>$ZTRAP=&ldquo;DO&mldr;&rdquo;</td><td>Transfers execution temporarily to another label upon encountering an error. When GT.M returns from a DO and completes the $ZTRAP action, execution continues at the beginning of the line containing the error and re-executes the entire line containing the error. Use with I/O device errors where operator may intervene to correct the error condition.</td></tr><tr><td>$ZTRAP=""</td><td>Returns to shell with the Status Code and terminates execution. If SET in error handling routines, prevents infinite loops. Prevents access to Direct Mode. Use in production code when the invoking shell needs to test $?.</td></tr><tr><td>$ETRAP=&ldquo;SET $ECODE=&rdquo;"""" $ZTRAP=&ldquo;QUIT&rdquo;</td><td>Terminates execution at that level upon encountering an error, and returns to the invocation level at the point immediately following the invocation. Use to ignore errors on a particular level and continue executing.</td></tr><tr><td>$ZTRAP=&ldquo;HALT&rdquo;</td><td>Returns to the shell as if normal termination occurred. Avoids access to Direct Mode. Use in production code when the invoking shell does not need to examine the exit status of the GT.M process.</td></tr></tbody></table><h3>Errors in $ZTRAP<span class="hx:absolute hx:-mt-20" id=errors-in-ztrap></span>
+<a href=#errors-in-ztrap class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>If $ZTRAP contains invalid source code, GT.M displays an error message and puts the process into Direct Mode.</p><p>If the action specified by $ZTRAP results in another run-time error before changing the value of $ZTRAP, it may result in a loop that iteratively invokes $ZTRAP until a stack overflow terminates the GT.M image. Keep $ZTRAP simple and take special care to debug exception handling.</p><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>[Note]</td><td>Note</td></tr><tr><td>An error in $ETRAP code triggers an implicit TROLLBACK:$TLEVEL QUIT:$QUIT "" QUIT.</td><td></td></tr></tbody></table><h3>Recording Information about Errors<span class="hx:absolute hx:-mt-20" id=recording-information-about-errors></span>
+<a href=#recording-information-about-errors class=subheading-anchor aria-label="Permalink for this section"></a></h3><p>GT.M provides a number of standard features and extensions to examine and record information about an error condition.</p><p>The extensions are:</p><ul><li>ZSHOW</li><li>ZWRITE</li><li>$ECODE</li><li>$STACK</li><li>$STACK()</li><li>$ZSTATUS</li><li>$ZJOBEXAM()</li><li>$ZLEVEL</li></ul><p>The ZSHOW command displays information about the current M environment. A ZSHOW argument may contain an expression that contains codes selecting one or more types of information for output.</p><p>A: selects auto-relink information</p><p>B: selects ZBREAK information</p><p>C: provides the list of loaded external call packages and their routines. ZSHOW &ldquo;C&rdquo; does not report packages that are accessible but have not been accessed by the process.</p><p>D: selects open device information</p><p>G: selects global statistic information</p><p>I: selects intrinsic special variables</p><p>L: selects locks held by the process</p><p>R: selects the M stack but with routine hashes</p><p>S: selects the M stack</p><p>V: selects local variables</p><p>*: selects all possible ZSHOW information except A.</p><p>A ZSHOW with no argument displays the M stack on the current device. It lists the program stack from initiation to the current execution level.</p><p>The ZWRITE command prints the current value of defined variables. ZWRITE provides a tool for examining or saving variable context. ZWRITE and ZSHOW can only display the current local variables, not any local variable states that have been protected by NEW commands, or appearance in an invoked formallist. A WRITE may also display current global variables.</p><p>The $ECODE special variable contains a M standardized/user defined/GT.M specific error code.</p><p>The $STACK special variable contains the current level of M execution stack depth.</p><p>The $STACK() function returns strings describing aspects of the execution environment.</p><p>The $ZLEVEL special variable maintains an integer that indicates the level of nesting of DO and XECUTE commands. $ZLEVEL always contains an integer count of the number of levels displayed by issuing a ZSHOW &ldquo;S&rdquo; in that context.</p><p>The $ZJOBEXAM() function returns a string indicating the full path to the file where it stored a process context dump.</p><p>The $ZSTATUS special variable records the error condition code and location of the last error condition during execution.</p><p>For I/O operations, GT.M uses the $ZA, $ZB and $ZEOF special variables. $ZA contains a status determined by the last read on the current device.</p><p>To simplify record keeping, an application may set $ZTRAP to an error-handling routine that records information about an error. The next section provides an example of a routine ERR.m that does this.</p><h4>Program to Record Information on an Error using $ZTRAP<span class="hx:absolute hx:-mt-20" id=program-to-record-information-on-an-error-using-ztrap></span>
+<a href=#program-to-record-information-on-an-error-using-ztrap class=subheading-anchor aria-label="Permalink for this section"></a></h4><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;ZPRINT ^ERR
+ERR0;;RECORD CONTENT OF AN ERROR
+;
+RECORD  SET $ZTRAP=&#34;GOTO OPEN&#34;
+        ZSHOW &#34;*&#34;:^ERR($J,$H)
+        GOTO LOOPT;$H might change
+LOOPV   ZSHOW &#34;V&#34;:^ERR($J,$H,&#34;VL&#34;,$ZLEVEL)
+LOOPT   IF $ZLEVEL&gt;1 ZGOTO $ZLEVEL-1:LOOPV
+STACK   SET $ZTRAP=&#34;GOTO WARN&#34;
+        SET %ERRVH=$H;can cause error if memory low
+        SET ^ERR($J,%ERRVH,&#34;$STACK&#34;)=$STACK
+        SET ^ERR($J,%ERRVH,&#34;$STACK&#34;,-1)=$STACK(-1)
+        FOR %ERRVI=$STACK(-1):-1:1 DO
+        . SET %ERRVK=&#34;&#34;
+        . FOR %ERRVJ=&#34;PLACE&#34;,&#34;MCODE&#34;,&#34;ECODE&#34; DO
+        . . SET %ERRVK=%ERRVK_$STACK(%ERRVI,%ERRVJ)_&#34;|~|&#34;
+        . SET ^ERR($J,%ERRVH,&#34;$STACK&#34;,%ERRVI)=%ERRVK
+        GOTO WARN
+OPEN    SET $ZTRAP=&#34;GOTO OPEN1&#34;
+        SET %ERRIO=$IO,%ERRZA=$ZA,%ERRZB=$ZB,%ERRZE=$ZEOF
+        SET %ERRVF=&#34;REC.ERR&#34;
+        SET %ERRVF=$ZDATE($H,&#34;YEARMMDD2460SS&#34;)_&#34;_&#34;_$J_&#34;.ERR&#34;
+        OPEN %ERRVF:NEWVERSION
+        USE %ERRVF
+        S $ZT=&#34;S $ZT=&#34;&#34; G WARN&#34;&#34; U $P:(NOCENA:CTRAP=&#34;&#34;&#34;&#34;) G STAC&#34;
+        ZSHOW &#34;*&#34;
+        KILL %ERRVF,%ERRIO,%ERRZA,%ERRZB,%ERRZE
+        GOTO LOOPU
+LOOPF   WRITE !,&#34;LOCAL VARIABLES FOR ZLEVEL: &#34;,$ZLEVEL,!
+        ZWRITE
+LOOPU   IF $ZLEVEL&gt;1 ZGOTO $ZLEVEL-1:LOOPF
+        WRITE !
+STAC    SET $ZTRAP=&#34;GOTO WARN&#34;
+        WRITE !,&#34;PROGRAM STACK: &#34;,!
+        WRITE !,&#34;$STACK: &#34;,$STACK,!
+        WRITE !,&#34;$STACK(-1): &#34;,$STACK(-1),!
+        FOR %ERRVI=$STACK(-1):-1:1 DO
+        . WRITE !,&#34;LEVEL: &#34;,%ERRVI
+        . SET %ERRVK=10
+        . FOR %ERRVJ=&#34;PLACE&#34;,&#34;MCODE&#34;,&#34;ECODE&#34; DO
+        .. W ?%ERRVK,&#34;&#34;,%ERRVJ,&#34;:&#34;,$STACK(%ERRVI,%ERRVJ)
+        .. SET %ERRVK=%ERRVK&#43;20
+        CLOSE $IO
+WARN    SET $ZTRAP=&#34;GOTO FATAL&#34;
+        IF $P=$I SET %ERRIO=$IO,%ERRZA=$ZA,%ERRZB=$ZB,%ERRZE=$ZEOF
+        USE $P:(NOCENABLE:CTRAP=&#34;&#34;:EXCEPTION=&#34;&#34;)
+        WRITE !,&#34;YOU HAVE ENCOUNTERED AN ERROR&#34;
+        WRITE !,&#34;PLEASE NOTIFY JOAN Q SUPPORT PERSON&#34;,!
+FATAL   SET $ZTRAP=&#34;&#34;
+        ZM &#43;$P($ST($ST(-1),&#34;ECODE&#34;),&#34;Z&#34;,2)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>The routine sets $ZTRAP to a sequence of values so that, in the event of an error various fallback actions are taken. If a STACKCRIT error occurs, GT.M makes a small amount of space for error handling. However, if the error handler uses up significant amounts of space by nesting routines or manupulating local variables, the error handler may cause another STACKCRIT error. In this case, it is possible for the error handling to loop endlessly, therefore this routine changes $ZTRAP so that each error moves the routine closer to completion.</p><p>First it attempts to store the context information in the global ^ERR. The LOOPV-LOOPT code records the invocation levels using the ZSHOW command. This technique addresses the situation where the application program defines or NEWs local variables for each level. The code executes a pass through the loop for each instance where the value of $ZLEVEL is greater than one (1). For each pass, ERR.M decrements the value of $ZLEVEL with the ZGOTO. When the value of $ZLEVEL reaches one (1), the code at, and following, the STACK label stores the error context available in the $STACK() function.</p><p>If there is a problem with storing any of this information, ^ERR attempts to store the context information in a file in the current default working directory. If it uses a file, in order to (at the label OPEN), record information about I/O operations, on the current device at the time of the error, the error handler SETs local variables to the values of the device specific I/O special variables $IO, $ZA, $ZB and $ZEOF before opening the log file.</p><p>The routine OPENs the log file with a name made up of the date and $JOB of the process. The NEWVERSION deviceparameter instructs GT.M to create a new version of the file. The LOOPF-LOOPU code records the invocation levels using the ZWRITE command in a manner analogous to that described above. If an error occurs trying to write to the file, $ZTRAP USEs the principal device and transfers control to the STAC label in an attempt to provide a minimal error context on the user terminal. The code at and following the STAC label records the error context available in the $STACK() function.</p><p>At the label WARN, the routine attempts to notify the user that an error has occurred and who to notify.</p><p>At the label FATAL, the ZMESSAGE command resignals the error. Because (with proper setup) $ETRAP and $ZTRAP are now null, GT.M releases control of the process to the host shell. In this example, the user never has access to Direct Mode.</p><p>Example:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;zprint ^EP13
+EP13    WRITE !,&#34;THIS IS &#34;,$TEXT(&#43;0)
+        SET $ZTRAP=&#34;GOTO NODB&#34;
+        KILL ^ERR
+NODB    SET $ECODE=&#34;&#34;;this affects only $ETRAP
+        ;S $ET=&#34;GOTO ^ERR&#34;;this implicitly stacks $ZTRAP
+        N $ZT S $ZT=&#34;GOTO ^ERR&#34; ;gives similar result
+        DO SUB1
+        WRITE !,&#34;THIS IS THE END&#34;
+        QUIT
+SUB1    WRITE !,&#34;THIS IS SUB1&#34;
+        NEW
+        SET (A,B,C)=$ZLEVEL
+        DO SUB2
+        QUIT
+SUB2    WRITE !,&#34;THIS IS SUB2&#34;
+        NEW
+        SET (B,C,D)=$ZLEVEL
+        DO SUB3
+        QUIT
+SUB3    WRITE !,&#34;THIS IS SUB3&#34;
+        NEW
+        SET (A,C,D)=$ZLEVEL
+        DO BAD
+BAD     NEW (A)
+        SET B=&#34;BAD&#34;
+        WRITE 1/0
+        WRITE !,&#34;THIS IS NOT DISPLAYED&#34;
+        QUIT
+ 
+GTM&gt;do ^EP13
+THIS IS EP13
+THIS IS SUB1
+THIS IS SUB2
+THIS IS SUB3
+YOU HAVE ENCOUNTERED AN ERROR
+PLEASE NOTIFY JOAN Q SUPPORT PERSON</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div><p>Example EP13 uses the error recording routine by setting $ZTRAP=&ldquo;GOTO ^ERR&rdquo;. When the routine encounters an error at label BAD, GT.M transfers control to routine ERR. Afterwards the ^ERR global would have contents like:</p><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"><div><pre><code>GTM&gt;zwrite ^ERR
+^ERR(13258,&#34;64813,17382&#34;,&#34;$STACK&#34;)=0
+^ERR(13258,&#34;64813,17382&#34;,&#34;$STACK&#34;,-1)=5
+^ERR(13258,&#34;64813,17382&#34;,&#34;$STACK&#34;,1)=&#34;NODB&#43;3^EP13|~|        DO SUB1|~||~|&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;$STACK&#34;,2)=&#34;SUB1&#43;3^EP13|~|        DO SUB2|~||~|&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;$STACK&#34;,3)=&#34;SUB2&#43;3^EP13|~|        DO SUB3|~||~|&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;$STACK&#34;,4)=&#34;SUB3&#43;3^EP13|~|        DO BAD|~||~|&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;$STACK&#34;,5)=&#34;BAD&#43;2^EP13|~|        WRITE 1/0|~|,M9,Z150373210,|~|&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;D&#34;,1)=&#34;/dev/pts/0 OPEN TERMINAL NOPAST NOESCA NOREADS TYPE WIDTH=165 LENG=48 &#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;G&#34;,0)=&#34;GLD:*,REG:*,SET:77,KIL:3,GET:0,DTA:0,ORD:0,ZPR:0,QRY:0,LKS:0,LKF:0,CTN:0,DRD:3,DWT:0,NTW:77,NTR:5,NBW:85,NBR:170,NR0:0,NR1:0,NR2:0,N
+R3:0,TTW:0,TTR:0,TRB:0,TBW:0,TBR:0,TR0:0,TR1:0,TR2:0,TR3:0,TR4:0,TC0:0,TC1:0,TC2:0,TC3:0,TC4:0,ZTR:0,DFL:0,DFS:0,JFL:0,JFS:0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;G&#34;,0,1)=&#34;,JBB:0,JFB:0,JFW:0,JRL:0,JRP:0,JRE:0,JRI:0,JRO:0,JEX:0,DEX:0,CAT:80,CFE:0,CFS:0,CFT:0,CQS:0,CQT:0,CYS:0,CYT:0,BTD:6,WFR:0,BUS:0,BTS:0,STG:0,KTG:0,ZTG:0,DEXA:0,GLB:0,JNL:0,MLK:0,PRC:0,TRX:0,ZAD:0,JOPA:0,AFRA:0,BREA:0,MLBA:0,TRGA:0,WRL:0,PRG:0,WFL:0,WHE:0,INC:0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;G&#34;,1)=&#34;GLD:/home/gtc_twinata/staff/nitin/a.gld,REG:DEFAULT,SET:79,KIL:4,GET:0,DTA:0,ORD:0,ZPR:0,QRY:0,LKS:0,LKF:0,CTN:79,DRD:3,DWT:0,NTW:79
+,NTR:6,NBW:87,NBR:178,NR0:0,NR1:0,NR2:0,NR3:0,TTW:0,TTR:0,TRB:0,TBW:0,TBR:0,TR0:0,TR1:0,TR2:0,TR3:0,TR4:0,TC0:0,TC1:0,TC2:0,&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;G&#34;,1,1)=&#34;TC3:0,TC4:0,ZTR:0,DFL:0,DFS:0,JFL:0,JFS:0,JBB:0,JFB:0,JFW:0,JRL:0,JRP:0,JRE:0,JRI:0,JRO:0,JEX:0,DEX:0,CAT:83,CFE:0,CFS:0,CFT:0,CQS
+:0,CQT:0,CYS:0,CYT:0,BTD:6,WFR:0,BUS:0,BTS:0,STG:0,KTG:0,ZTG:0,DEXA:0,GLB:0,JNL:0,MLK:0,PRC:0,TRX:0,ZAD:0,JOPA:0,AFRA:0,BREA:0,MLBA:0,TRGA:0,WRL:0,PRG:0,WFL:0,WHE:0,INC:0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,1)=&#34;$DEVICE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,2)=&#34;$ECODE=&#34;&#34;,M9,Z150373210,&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,3)=&#34;$ESTACK=5&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,4)=&#34;$ETRAP=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,5)=&#34;$HOROLOG=&#34;&#34;64813,17382&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,6)=&#34;$IO=&#34;&#34;/dev/pts/0&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,7)=&#34;$JOB=13258&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,8)=&#34;$KEY=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,9)=&#34;$PRINCIPAL=&#34;&#34;/dev/pts/0&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,10)=&#34;$QUIT=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,11)=&#34;$REFERENCE=&#34;&#34;^ERR(13258,&#34;&#34;&#34;&#34;64813,17382&#34;&#34;&#34;&#34;,&#34;&#34;&#34;&#34;I&#34;&#34;&#34;&#34;,10)&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,12)=&#34;$STACK=5&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,13)=&#34;$STORAGE=2147483647&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,14)=&#34;$SYSTEM=&#34;&#34;47,gtm_sysid&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,15)=&#34;$TEST=1&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,16)=&#34;$TLEVEL=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,17)=&#34;$TRESTART=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,18)=&#34;$X=12&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,19)=&#34;$Y=6&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,20)=&#34;$ZA=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,21)=&#34;$ZALLOCSTOR=780808&#34;
+^ERR(197306,&#34;64341,39400&#34;,&#34;I&#34;,21)=&#34;$ZAUDIT=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,22)=&#34;$ZB=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,23)=&#34;$ZCHSET=&#34;&#34;M&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,24)=&#34;$ZCLOSE=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,25)=&#34;$ZCMDLINE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,26)=&#34;$ZCOMPILE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,27)=&#34;$ZCSTATUS=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,28)=&#34;$ZDATEFORM=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,29)=&#34;$ZDIRECTORY=&#34;&#34;/path/to/the/current/directory&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,30)=&#34;$ZEDITOR=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,31)=&#34;$ZEOF=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,32)=&#34;$ZERROR=&#34;&#34;Unprocessed $ZERROR, see $ZSTATUS&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,33)=&#34;$ZGBLDIR=&#34;&#34;/path/to/the/global/directory&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,34)=&#34;$ZHOROLOG=&#34;&#34;64813,17382,175283,14400&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,35)=&#34;$ZICUVER=&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,36)=&#34;$ZININTERRUPT=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,37)=&#34;$ZINTERRUPT=&#34;&#34;IF $ZJOBEXAM()&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,38)=&#34;$ZIO=&#34;&#34;/dev/pts/0&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,39)=&#34;$ZJOB=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,40)=&#34;$ZKEY=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,41)=&#34;$ZLEVEL=6&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,42)=&#34;$ZMAXTPTIME=30&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,43)=&#34;$ZMODE=&#34;&#34;INTERACTIVE&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,44)=&#34;$ZONLNRLBK=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,45)=&#34;$ZPATNUMERIC=&#34;&#34;M&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,46)=&#34;$ZPIN=&#34;&#34;/dev/pts/0&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,47)=&#34;$ZPOSITION=&#34;&#34;RECORD&#43;1^ERR&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,48)=&#34;$ZPOUT=&#34;&#34;/dev/pts/0&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,49)=&#34;$ZPROMPT=&#34;&#34;GTM&gt;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,50)=&#34;$ZQUIT=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,51)=&#34;$ZREALSTOR=802648&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,52)=&#34;$ZRELDATE=&#34;&#34;20180614 00:33&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,53)=&#34;$ZROUTINES=&#34;&#34;. /usr/lib/fis-gtm/V6.3-007_x86_64 /usr/lib/fis-gtm/V6.3-007_x86_64/plugin/o(/usr/lib/fis-gtm/V6.3-007_x86_64/plugin/r)&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,54)=&#34;$ZSOURCE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,55)=&#34;$ZSTATUS=&#34;&#34;150373210,BAD&#43;2^EP13,%GTM-E-DIVZERO, Attempt to divide by zero&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,56)=&#34;$ZSTEP=&#34;&#34;B&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,57)=&#34;$ZSTRPLLIM=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,58)=&#34;$ZSYSTEM=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,59)=&#34;$ZTIMEOUT=-1&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,60)=&#34;$ZTDATA=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,61)=&#34;$ZTDELIM=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,62)=&#34;$ZTEXIT=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,63)=&#34;$ZTLEVEL=0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,64)=&#34;$ZTNAME=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,65)=&#34;$ZTOLDVAL=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,66)=&#34;$ZTRAP=&#34;&#34;GOTO OPEN&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,67)=&#34;$ZTRIGGEROP=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,68)=&#34;$ZTSLATE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,69)=&#34;$ZTUPDATE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,70)=&#34;$ZTVALUE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,71)=&#34;$ZTWORMHOLE=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,72)=&#34;$ZUSEDSTOR=759855&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,73)=&#34;$ZUT=1528966182176530&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,74)=&#34;$ZVERSION=&#34;&#34;GT.M V6.3-007 Linux x86_64&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;I&#34;,75)=&#34;$ZYERROR=&#34;&#34;&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;L&#34;,0)=&#34;MLG:0,MLT:0&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;R&#34;,1)=&#34;RECORD&#43;1^ERR:e99b16e4f7e1112d058dc22cb53491fd&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;R&#34;,2)=&#34;SUB3&#43;3^EP13:d9e026c6d14e42567d3e64eecd049726&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;R&#34;,3)=&#34;SUB2&#43;3^EP13:d9e026c6d14e42567d3e64eecd049726&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;R&#34;,4)=&#34;SUB1&#43;3^EP13:d9e026c6d14e42567d3e64eecd049726&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;R&#34;,5)=&#34;NODB&#43;3^EP13:d9e026c6d14e42567d3e64eecd049726&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;R&#34;,6)=&#34;&#43;1^GTM$DMOD    (Direct mode) &#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;V&#34;,1)=&#34;A=5 ;*&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;V&#34;,2)=&#34;B=&#34;&#34;BAD&#34;&#34;&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,3,&#34;V&#34;,1)=&#34;A=3&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,3,&#34;V&#34;,2)=&#34;B=3&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,3,&#34;V&#34;,3)=&#34;C=3&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,4,&#34;V&#34;,1)=&#34;B=4&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,4,&#34;V&#34;,2)=&#34;C=4&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,4,&#34;V&#34;,3)=&#34;D=4&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,5,&#34;V&#34;,1)=&#34;A=5&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,5,&#34;V&#34;,2)=&#34;C=5&#34;
+^ERR(13258,&#34;64813,17382&#34;,&#34;VL&#34;,5,&#34;V&#34;,3)=&#34;D=5&#34;</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"><button class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50" title="Copy code" aria-label="Copy code" data-copied-label=Copied!><div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div><div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div></button></div></div></div><div class=hx:mt-16></div></main></article></div><footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hx:mx-auto hx:flex hx:gap-2 hx:py-2 hx:px-4 hextra-max-footer-width"><div class="hx:flex hx:justify-items-start hx:group" data-theme=light><button title="Change theme" data-state=closed data-location=bottom class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow" type=button aria-label="Change theme" aria-expanded=false aria-haspopup=menu><div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height="12" class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364-.707-.707M6.343 6.343l-.707-.707m12.728.0-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">Light</span><svg height="12" class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003.0 0012 21a9.003 9.003.0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">Dark</span><svg height="12" class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M11.996094 2C6.4986225 2.0192368 2.03125 6.5024993 2.03125 12c0 5.497501 4.4673725 9.980763 9.964844 10H12 12.0039c5.497471-.01924 9.964844-4.502499 9.964844-10 0-5.4975007-4.467373-9.9807632-9.964844-10H12zM12 4c4.417218.017598 7.96875 3.5822356 7.96875 8 0 4.417764-3.551532 7.982402-7.96875 8z"/></svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">System</span></div></button><ul class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" style="position:fixed;inset:auto auto 0 0;margin:0;min-width:100px" data-theme=light role=menu><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=true tabindex=-1 data-item=light class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+Light
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=dark class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+Dark
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li><li role=none class="hx:flex hx:flex-col"><button type=button role=menuitemradio aria-checked=false tabindex=-1 data-item=system class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0">
+System
+<span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height="1em" width="1em" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span></button></li></ul></div></div><hr class="hx:border-gray-200 hx:dark:border-neutral-800"><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"><div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class=hx:font-semibold><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target=_blank rel="noopener noreferrer" title="Hextra GitHub Homepage" href=https://github.com/imfing/hextra><span>Powered by Hextra<svg height="1em" class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m105.50024 22.224647c-9.59169-5.537563-21.40871-5.537563-31.000093.0L39.054693 42.689119C29.463353 48.226675 23.55484 58.460531 23.55484 69.535642v40.928918c0 11.07542 5.908513 21.3092 15.499853 26.84652l35.445453 20.46446c9.591313 5.53732 21.408404 5.53732 31.000094.0l35.44507-20.46446c9.59131-5.53732 15.49985-15.7711 15.49985-26.84652V69.535642c0-11.075111-5.90854-21.308967-15.49985-26.846523zM34.112797 85.737639c-1.384445 2.397827-1.384445 5.352099.0 7.749927l24.781554 42.922974c1.38437 2.39783 3.942853 3.87496 6.711592 3.87496h49.563107c2.76905.0 5.3273-1.47713 6.71144-3.87496l24.78194-42.922974c1.38414-2.397828 1.38414-5.3521.0-7.749927L121.88049 42.814746c-1.38414-2.397828-3.94239-3.874964-6.71144-3.874964H65.605944c-2.768739.0-5.327223 1.477059-6.711592 3.874964z" style="stroke-width:.774993"/></svg></span></a></div></div></div></footer><script defer src=/gtmdoc-mumps.pl/js/main.min.f5f8961995fd44fce1a7a49b90f6f0fec7d53726f778a21b23daad3992740af0.js integrity="sha256-9fiWGZX9RPzhp6SbkPbw/sfVNyb3eKIbI9qtOZJ0CvA="></script><script defer src=/gtmdoc-mumps.pl/js/flexsearch.433e941a8a573ebb9931fc16fc75266ab6b93f569ac2fb4f3dc66882e0416f4c.js integrity="sha256-Qz6UGopXPruZMfwW/HUmara5P1aawvtPPcZoguBBb0w=" crossorigin=anonymous></script><script defer src=/gtmdoc-mumps.pl/en.search.min.290cad5675e52e47c5ea6d0edbfdd75fb301eff17b66e44706f51420680d2ef7.js integrity="sha256-KQytVnXlLkfF6m0O2/3XX7MB7/F7ZuRHBvUUIGgNLvc="></script></body></html>
