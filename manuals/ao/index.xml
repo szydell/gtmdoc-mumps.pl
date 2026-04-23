@@ -1,4 +1,4 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GT.M Documentation – GT.M Administration and Operations Guide</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/</link><description>Recent content in GT.M Administration and Operations Guide on GT.M Documentation</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/index.xml" rel="self" type="application/rss+xml"/><item><title>About This Manual</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/preface/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/preface/</guid><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GT.M Documentation – GT.M Administration and Operations Guide</title><link>https://mumps.pl/manuals/ao/</link><description>Recent content in GT.M Administration and Operations Guide on GT.M Documentation</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><atom:link href="https://mumps.pl/manuals/ao/index.xml" rel="self" type="application/rss+xml"/><item><title>About This Manual</title><link>https://mumps.pl/manuals/ao/preface/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/preface/</guid><description>
 &lt;h2&gt;About This Manual&lt;span class="hx:absolute hx:-mt-20" id="about-this-manual"&gt;&lt;/span&gt;
 &lt;a href="#about-this-manual" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="pr01s01.html"&gt;Intended Audience&lt;/a&gt;&lt;/p&gt;
@@ -24,7 +24,7 @@ changes to application logic and schema.&lt;/p&gt;
 &lt;p&gt;You can install and manage GT.M using the utilities described in this manual and
 standard operating system tools. The first three chapters provide an overview of
 GT.M, installation procedures, and GT.M system environment. The remaining chapters
-describe GT.M operational management.&lt;/p&gt;</description></item><item><title>Administration and Operation of Encrypted Databases</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch12s07/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch12s07/</guid><description>
+describe GT.M operational management.&lt;/p&gt;</description></item><item><title>Administration and Operation of Encrypted Databases</title><link>https://mumps.pl/manuals/ao/ch12s07/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch12s07/</guid><description>
 &lt;h2&gt;Administration and Operation of Encrypted Databases&lt;span class="hx:absolute hx:-mt-20" id="administration-and-operation-of-encrypted-databases"&gt;&lt;/span&gt;
 &lt;a href="#administration-and-operation-of-encrypted-databases" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Utility programs written in M (such as %GO) run within GT.M processes and behave like any other code written in M. Encryption keys are required if the GT.M process accesses encrypted databases. A process running a utility program written in M that does not access encrypted databases (such as %RSEL) does not need encryption keys just to run the utility program.&lt;/p&gt;
 &lt;p&gt;Utility programs not written in M (e.g., MUPIP) that need access to encryption keys do not prompt for the password to the key ring on disk. They require the obfuscated password to be available in the environment. You can use the maskpass program to set the password in the environment or a mumps wrapper process as discussed earlier to set the obfuscated password in the environment. In some cases, if a required key is not supplied, or if an incorrect key is specified, the utility program defers reporting the error at process start up in case subsequent actions don&amp;rsquo;t require access to encrypted data, and instead reports it when first attempting an encryption or decryption operation.&lt;/p&gt;
@@ -132,7 +132,7 @@ data-copied-label="Copied!"
 &lt;a href="#changing-the-encryption-keys" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;FIS recommends rotating (changing) the encryption key of the database for better security. The frequency of encryption key rotation depends on your security requirements and policies. MUPIP REORG -ENCRYPT provides the option to encrypt a database or rotate the keys of an already encrypted database. If you are using replication, you can encrypt the replicating secondary instance first to prevent your originating primary instance from any additional IO load that MUPIP REORG -ENCRYPT may add. FIS suggests using different encryption keys for different instances, so that if the keys for one instance are compromised, the application can be kept available from another instance whose keys are not compromised, while changing the encryption keys on the instance with compromised keys. For more information, refer to &lt;a href="gdm.html#reorg_encrypt"title="-Encrypt"&gt;“-Encrypt”&lt;/a&gt;.&lt;/p&gt;
 &lt;h3&gt;Encrypted Database Creation&lt;span class="hx:absolute hx:-mt-20" id="encrypted-database-creation"&gt;&lt;/span&gt;
 &lt;a href="#encrypted-database-creation" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;To create a new encrypted database, first use GDE to flag the database file for encryption (with the -ENCRYPTION segment qualifier). Then, create a $gtmcrypt_config file and work with your security team to obtain the relevant encryption keys. Then, use the maskpass utility to set the environment variable gtm_passwd to the obfuscated form of the passphrase keyring. Finally, execute MUPIP CREATE to create an encrypted database and MUPIP REORG -ENCRYPT=&amp;lt;encr_key&amp;gt; to encrypt the blocks of the database.&lt;/p&gt;
-&lt;p&gt;Once you encrypt a database, you cannot turn off encryption, it stays encrypted even if you specify MUPIP SET -NOENCRYPTABLE. If you wish any of the data in an encrypted database to be available unencrypted, you must extract the data and load it into a new database created to be unencypted and appropriately map the new database with a global directory. You can also use a MERGE command and multiple global directories to move data in either direction between encrypted and unencrypted database files.&lt;/p&gt;</description></item><item><title>Ao Figures</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ao_figures/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ao_figures/</guid><description/></item><item><title>AppendixA.GT.M's IPC Resource Usage</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ipc_usage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ipc_usage/</guid><description>
+&lt;p&gt;Once you encrypt a database, you cannot turn off encryption, it stays encrypted even if you specify MUPIP SET -NOENCRYPTABLE. If you wish any of the data in an encrypted database to be available unencrypted, you must extract the data and load it into a new database created to be unencypted and appropriately map the new database with a global directory. You can also use a MERGE command and multiple global directories to move data in either direction between encrypted and unencrypted database files.&lt;/p&gt;</description></item><item><title>Ao Figures</title><link>https://mumps.pl/manuals/ao/ao_figures/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ao_figures/</guid><description/></item><item><title>AppendixA.GT.M's IPC Resource Usage</title><link>https://mumps.pl/manuals/ao/ipc_usage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ipc_usage/</guid><description>
 &lt;h2&gt;AppendixA.GT.M&amp;rsquo;s IPC Resource Usage&lt;span class="hx:absolute hx:-mt-20" id="appendixagtms-ipc-resource-usage"&gt;&lt;/span&gt;
 &lt;a href="#appendixagtms-ipc-resource-usage" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="apas01.html"&gt;Examining GT.M&amp;rsquo;s IPC Resources&lt;/a&gt;&lt;/p&gt;
@@ -157,11 +157,11 @@ something does not seem right.&lt;/li&gt;
 daemon process GT.M uses to manage M locks and clean
 up IPC resources. This section also includes guidelines to fine-tune
 gtmsecshr for smooth operation.&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>AppendixB.Monitoring GT.M</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/monitoring_gtm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/monitoring_gtm/</guid><description>
+&lt;/ul&gt;</description></item><item><title>AppendixB.Monitoring GT.M</title><link>https://mumps.pl/manuals/ao/monitoring_gtm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/monitoring_gtm/</guid><description>
 &lt;h2&gt;AppendixB.Monitoring GT.M&lt;span class="hx:absolute hx:-mt-20" id="appendixbmonitoring-gtm"&gt;&lt;/span&gt;
 &lt;a href="#appendixbmonitoring-gtm" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="apbs01.html"&gt;Monitoring GT.M Messages&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="apbs02.html"&gt;Managing core dumps&lt;/a&gt;&lt;/p&gt;</description></item><item><title>AppendixC.Building Encryption Libraries</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/build_encry_lib/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/build_encry_lib/</guid><description>
+&lt;p&gt;&lt;a href="apbs02.html"&gt;Managing core dumps&lt;/a&gt;&lt;/p&gt;</description></item><item><title>AppendixC.Building Encryption Libraries</title><link>https://mumps.pl/manuals/ao/build_encry_lib/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/build_encry_lib/</guid><description>
 &lt;h2&gt;AppendixC.Building Encryption Libraries&lt;span class="hx:absolute hx:-mt-20" id="appendixcbuilding-encryption-libraries"&gt;&lt;/span&gt;
 &lt;a href="#appendixcbuilding-encryption-libraries" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -169,7 +169,7 @@ gtmsecshr for smooth operation.&lt;/li&gt;
 &lt;dd&gt;&lt;a href="apcs01.html#Ubuntu_LTS_x86_64_4182407"&gt;Debian, Ubuntu, RedHat and Fedora&lt;/a&gt;
 &lt;p&gt;&lt;a href="apcs01.html#IBM_AIX_5_3_pSeries_6214410681"&gt;IBM AIX 7.1 (pSeries)&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
-&lt;/dl&gt;</description></item><item><title>AppendixD.GT.M Security Philosophy</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/app_security_phil/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/app_security_phil/</guid><description>
+&lt;/dl&gt;</description></item><item><title>AppendixD.GT.M Security Philosophy</title><link>https://mumps.pl/manuals/ao/app_security_phil/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/app_security_phil/</guid><description>
 &lt;h2&gt;AppendixD.GT.M Security Philosophy&lt;span class="hx:absolute hx:-mt-20" id="appendixdgtm-security-philosophy"&gt;&lt;/span&gt;
 &lt;a href="#appendixdgtm-security-philosophy" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -179,12 +179,12 @@ gtmsecshr for smooth operation.&lt;/li&gt;
 &lt;/dd&gt;
 &lt;/dl&gt;
 &lt;p&gt;&lt;a href="apds02.html"&gt;gtmsecshr commands&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="apds03.html"&gt;Shared Resource Authorization Permissions&lt;/a&gt;&lt;/p&gt;</description></item><item><title>AppendixE.GTMPCAT - GT.M Process/Core Analysis Tool</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ape/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ape/</guid><description>
+&lt;p&gt;&lt;a href="apds03.html"&gt;Shared Resource Authorization Permissions&lt;/a&gt;&lt;/p&gt;</description></item><item><title>AppendixE.GTMPCAT - GT.M Process/Core Analysis Tool</title><link>https://mumps.pl/manuals/ao/ape/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ape/</guid><description>
 &lt;h2&gt;AppendixE.GTMPCAT - GT.M Process/Core Analysis Tool&lt;span class="hx:absolute hx:-mt-20" id="appendixegtmpcat---gtm-processcore-analysis-tool"&gt;&lt;/span&gt;
 &lt;a href="#appendixegtmpcat---gtm-processcore-analysis-tool" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="apes01.html"&gt;Overview&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="apes02.html"&gt;Usage&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="apes03.html"&gt;Interactive Mode&lt;/a&gt;&lt;/p&gt;</description></item><item><title>AppendixF.Packaging GT.M Applications</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/Package_GTM_Apps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/Package_GTM_Apps/</guid><description>
+&lt;p&gt;&lt;a href="apes03.html"&gt;Interactive Mode&lt;/a&gt;&lt;/p&gt;</description></item><item><title>AppendixF.Packaging GT.M Applications</title><link>https://mumps.pl/manuals/ao/Package_GTM_Apps/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/Package_GTM_Apps/</guid><description>
 &lt;h2&gt;AppendixF.Packaging GT.M Applications&lt;span class="hx:absolute hx:-mt-20" id="appendixfpackaging-gtm-applications"&gt;&lt;/span&gt;
 &lt;a href="#appendixfpackaging-gtm-applications" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -200,7 +200,7 @@ gtmsecshr for smooth operation.&lt;/li&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href="apfs01.html"title="Setting up a Captive User Application with GT.M"&gt;“Setting up a Captive User Application with GT.M”&lt;/a&gt;, such that when captive users login, they are immediately taken to the application, have no access to the shell or programmer prompt, and when they exit, are logged off the system.&lt;/li&gt;
 &lt;li&gt;&lt;a href="apfs02.html"title="Invoking GT.M through a C main() program"&gt;“Invoking GT.M through a C main() program”&lt;/a&gt;: in addition to providing another technique for creating captive applications, invoking through a C main() is the only way that application code has access to the original argc and argv of a shell command used to start the application (the $ZCMDLINE ISV provides an edited version of the command line).&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>AppendixG.Creating a $gtmcrypt_config file</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/TLS_Configuration_File/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/TLS_Configuration_File/</guid><description>
+&lt;/ol&gt;</description></item><item><title>AppendixG.Creating a $gtmcrypt_config file</title><link>https://mumps.pl/manuals/ao/TLS_Configuration_File/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/TLS_Configuration_File/</guid><description>
 &lt;h2&gt;AppendixG.Creating a $gtmcrypt_config file&lt;span class="hx:absolute hx:-mt-20" id="appendixgcreating-a-gtmcrypt_config-file"&gt;&lt;/span&gt;
 &lt;a href="#appendixgcreating-a-gtmcrypt_config-file" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -220,10 +220,10 @@ gtmsecshr for smooth operation.&lt;/li&gt;
 &lt;p&gt;&lt;a href="apgs03.html#create_leaf_app"&gt;Creating and signing demo leaf-level certificates&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="apgs03.html#tlsexampledemo"&gt;Example: Creating demo certificates&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
-&lt;/dl&gt;</description></item><item><title>AppendixH.V6 to V7 DB Upgrade</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/dbupgrade_matrix/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/dbupgrade_matrix/</guid><description>
+&lt;/dl&gt;</description></item><item><title>AppendixH.V6 to V7 DB Upgrade</title><link>https://mumps.pl/manuals/ao/dbupgrade_matrix/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/dbupgrade_matrix/</guid><description>
 &lt;h2&gt;AppendixH.V6 to V7 DB Upgrade&lt;span class="hx:absolute hx:-mt-20" id="appendixhv6-to-v7-db-upgrade"&gt;&lt;/span&gt;
 &lt;a href="#appendixhv6-to-v7-db-upgrade" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="aphs01.html"&gt;Database Upgrade Matrix&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Approaches to Database Recovery</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch11s02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch11s02/</guid><description>
+&lt;p&gt;&lt;a href="aphs01.html"&gt;Database Upgrade Matrix&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Approaches to Database Recovery</title><link>https://mumps.pl/manuals/ao/ch11s02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch11s02/</guid><description>
 &lt;h2&gt;Approaches to Database Recovery&lt;span class="hx:absolute hx:-mt-20" id="approaches-to-database-recovery"&gt;&lt;/span&gt;
 &lt;a href="#approaches-to-database-recovery" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;If you experience database integrity problems, there are three strategies to
 consider when approaching the recovery:&lt;/p&gt;
@@ -348,7 +348,7 @@ changed?&lt;/li&gt;
 &lt;li&gt;Was the problem preceded or followed by any other notable events?&lt;/li&gt;
 &lt;li&gt;Did you have any unusual problems during the analysis or recovery?&lt;/li&gt;
 &lt;li&gt;Do you have any suggestions about this procedure?&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Before you begin</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch02s02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch02s02/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Before you begin</title><link>https://mumps.pl/manuals/ao/ch02s02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch02s02/</guid><description>
 &lt;h2&gt;Before you begin&lt;span class="hx:absolute hx:-mt-20" id="before-you-begin"&gt;&lt;/span&gt;
 &lt;a href="#before-you-begin" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Before you begin installing GT.M, perform the following tasks:&lt;/p&gt;
 &lt;ul&gt;
@@ -401,7 +401,7 @@ changed?&lt;/li&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Building Encryption Libraries</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apcs01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apcs01/</guid><description>
+&lt;/table&gt;</description></item><item><title>Building Encryption Libraries</title><link>https://mumps.pl/manuals/ao/apcs01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/apcs01/</guid><description>
 &lt;h2&gt;Building Encryption Libraries&lt;span class="hx:absolute hx:-mt-20" id="building-encryption-libraries"&gt;&lt;/span&gt;
 &lt;a href="#building-encryption-libraries" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;FIS neither encourages nor supports the use of any specific encryption library. In order to be helpful, here is how we created the libraries for testing GT.M in the development environment.&lt;/p&gt;
 &lt;h3&gt;Debian, Ubuntu, RedHat and Fedora&lt;span class="hx:absolute hx:-mt-20" id="debian-ubuntu-redhat-and-fedora"&gt;&lt;/span&gt;
@@ -458,7 +458,7 @@ data-copied-label="Copied!"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>Chapter1.About GT.M</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch01/</guid><description>
+&lt;/div&gt;</description></item><item><title>Chapter1.About GT.M</title><link>https://mumps.pl/manuals/ao/ch01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch01/</guid><description>
 &lt;h2&gt;Chapter1.About GT.M&lt;span class="hx:absolute hx:-mt-20" id="chapter1about-gtm"&gt;&lt;/span&gt;
 &lt;a href="#chapter1about-gtm" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="ch01s01.html"&gt;Hardware/Operating System Environment&lt;/a&gt;&lt;/p&gt;
@@ -482,7 +482,7 @@ platform from Fidelity National Information Services (FIS). GT.M provides an M
 language subsystem, a database engine, and a complete set of utilities for
 administration and operation. One can install and manage GT.M using the utilities
 described in this manual and standard operating system tools. This chapter provides
-an overview of the GT.M system environment and utilities.&lt;/p&gt;</description></item><item><title>Chapter10.Database Structure Editor</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch10/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch10/</guid><description>
+an overview of the GT.M system environment and utilities.&lt;/p&gt;</description></item><item><title>Chapter10.Database Structure Editor</title><link>https://mumps.pl/manuals/ao/ch10/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch10/</guid><description>
 &lt;h2&gt;Chapter10.Database Structure Editor&lt;span class="hx:absolute hx:-mt-20" id="chapter10database-structure-editor"&gt;&lt;/span&gt;
 &lt;a href="#chapter10database-structure-editor" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="operate_dse.html"&gt;Operating in DSE&lt;/a&gt;&lt;/p&gt;
@@ -514,7 +514,7 @@ an overview of the GT.M system environment and utilities.&lt;/p&gt;</description
 &lt;p&gt;&lt;a href="dse_cmmds_quals.html#wcinit_dse_cmmd"&gt;Wcinit&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
 &lt;/dl&gt;
-&lt;p&gt;&lt;a href="ch10s03.html"&gt;DSE Command Summary&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter11.Maintaining Database Integrity</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch11/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch11/</guid><description>
+&lt;p&gt;&lt;a href="ch10s03.html"&gt;DSE Command Summary&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter11.Maintaining Database Integrity</title><link>https://mumps.pl/manuals/ao/ch11/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch11/</guid><description>
 &lt;h2&gt;Chapter11.Maintaining Database Integrity&lt;span class="hx:absolute hx:-mt-20" id="chapter11maintaining-database-integrity"&gt;&lt;/span&gt;
 &lt;a href="#chapter11maintaining-database-integrity" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -609,7 +609,7 @@ followed with database integrity checks.&lt;/p&gt;
 &lt;li&gt;Recommended methods for handling database problems&lt;/li&gt;
 &lt;li&gt;General techniques and strategies for using DSE&lt;/li&gt;
 &lt;li&gt;Instructions for identifying and repairing errors with DSE&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Chapter12.Database Encryption</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch12/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch12/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Chapter12.Database Encryption</title><link>https://mumps.pl/manuals/ao/ch12/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch12/</guid><description>
 &lt;h2&gt;Chapter12.Database Encryption&lt;span class="hx:absolute hx:-mt-20" id="chapter12database-encryption"&gt;&lt;/span&gt;
 &lt;a href="#chapter12database-encryption" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -647,7 +647,7 @@ followed with database integrity checks.&lt;/p&gt;
 &lt;p&gt;&lt;a href="ch12s08.html#encr_operation"&gt;Operation&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
 &lt;/dl&gt;
-&lt;p&gt;&lt;a href="ch12s09.html"&gt;Using the Reference Implementation with Older Releases&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter13.GT.CM Client/Server</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch13/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch13/</guid><description>
+&lt;p&gt;&lt;a href="ch12s09.html"&gt;Using the Reference Implementation with Older Releases&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter13.GT.CM Client/Server</title><link>https://mumps.pl/manuals/ao/ch13/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch13/</guid><description>
 &lt;h2&gt;Chapter13.GT.CM Client/Server&lt;span class="hx:absolute hx:-mt-20" id="chapter13gtcm-clientserver"&gt;&lt;/span&gt;
 &lt;a href="#chapter13gtcm-clientserver" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="ch13s01.html"&gt;Introduction&lt;/a&gt;&lt;/p&gt;
@@ -660,7 +660,7 @@ followed with database integrity checks.&lt;/p&gt;
 &lt;p&gt;&lt;a href="ch13s02.html#gtcp_err_msg"&gt;Error Messages&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="ch13s02.html#gtcm_examples"&gt;Examples&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
-&lt;/dl&gt;</description></item><item><title>Chapter2.Installing GT.M</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch02/</guid><description>
+&lt;/dl&gt;</description></item><item><title>Chapter2.Installing GT.M</title><link>https://mumps.pl/manuals/ao/ch02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch02/</guid><description>
 &lt;h2&gt;Chapter2.Installing GT.M&lt;span class="hx:absolute hx:-mt-20" id="chapter2installing-gtm"&gt;&lt;/span&gt;
 &lt;a href="#chapter2installing-gtm" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="ch02s01.html"&gt;Obtaining GT.M Distribution Media&lt;/a&gt;&lt;/p&gt;
@@ -671,7 +671,7 @@ followed with database integrity checks.&lt;/p&gt;
 &lt;/dl&gt;
 &lt;p&gt;&lt;a href="ch02s04.html"&gt;gtminstall script&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;This chapter describes the installation procedure for GT.M. Always see the release notes for
-special instructions before installing GT.M.&lt;/p&gt;</description></item><item><title>Chapter3.Basic Operations</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03/</guid><description>
+special instructions before installing GT.M.&lt;/p&gt;</description></item><item><title>Chapter3.Basic Operations</title><link>https://mumps.pl/manuals/ao/ch03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch03/</guid><description>
 &lt;h2&gt;Chapter3.Basic Operations&lt;span class="hx:absolute hx:-mt-20" id="chapter3basic-operations"&gt;&lt;/span&gt;
 &lt;a href="#chapter3basic-operations" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -698,7 +698,7 @@ special instructions before installing GT.M.&lt;/p&gt;</description></item><item
 &lt;dd&gt;&lt;a href="ch03s06.html#zsysfilter"&gt;ZSYSTEM and PIPE OPEN command restriction facility&lt;/a&gt;
 &lt;p&gt;&lt;a href="ch03s06.html#audit_principal_device"&gt;Audit Logging facility&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
-&lt;/dl&gt;</description></item><item><title>Chapter4.Global Directory Editor</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gdechap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gdechap/</guid><description>
+&lt;/dl&gt;</description></item><item><title>Chapter4.Global Directory Editor</title><link>https://mumps.pl/manuals/ao/gdechap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/gdechap/</guid><description>
 &lt;h2&gt;Chapter4.Global Directory Editor&lt;span class="hx:absolute hx:-mt-20" id="chapter4global-directory-editor"&gt;&lt;/span&gt;
 &lt;a href="#chapter4global-directory-editor" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="glbl_dir_intro.html"&gt;Global Directory&lt;/a&gt;&lt;/p&gt;
@@ -740,7 +740,7 @@ special instructions before installing GT.M.&lt;/p&gt;</description></item><item
 &lt;/dd&gt;
 &lt;dt&gt;&lt;a href="gde_cmmd_summ.html"&gt;GDE Command Summary&lt;/a&gt;&lt;/dt&gt;
 &lt;dd&gt;&lt;a href="gde_cmmd_summ.html#qual_summ"&gt;GDE Command Qualifier Summary&lt;/a&gt;&lt;/dd&gt;
-&lt;/dl&gt;</description></item><item><title>Chapter5.General Database Management</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/mupipchap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/mupipchap/</guid><description>
+&lt;/dl&gt;</description></item><item><title>Chapter5.General Database Management</title><link>https://mumps.pl/manuals/ao/mupipchap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/mupipchap/</guid><description>
 &lt;h2&gt;Chapter5.General Database Management&lt;span class="hx:absolute hx:-mt-20" id="chapter5general-database-management"&gt;&lt;/span&gt;
 &lt;a href="#chapter5general-database-management" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -777,7 +777,7 @@ special instructions before installing GT.M.&lt;/p&gt;</description></item><item
 &lt;p&gt;&lt;a href="gdm.html#mup_gupgrade"&gt;UPGRADE&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
 &lt;/dl&gt;
-&lt;p&gt;&lt;a href="mup_summary.html"&gt;MUPIP Command Summary&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter6.GT.M Journaling</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/journaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/journaling/</guid><description>
+&lt;p&gt;&lt;a href="mup_summary.html"&gt;MUPIP Command Summary&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter6.GT.M Journaling</title><link>https://mumps.pl/manuals/ao/journaling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/journaling/</guid><description>
 &lt;h2&gt;Chapter6.GT.M Journaling&lt;span class="hx:absolute hx:-mt-20" id="chapter6gtm-journaling"&gt;&lt;/span&gt;
 &lt;a href="#chapter6gtm-journaling" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -815,7 +815,7 @@ special instructions before installing GT.M.&lt;/p&gt;</description></item><item
 &lt;p&gt;&lt;a href="mup_journal.html#jnl_select"&gt;Journal Selection Qualifiers&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
 &lt;/dl&gt;
-&lt;p&gt;&lt;a href="jnl_ext.html"&gt;Journal Extract Formats&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter7.Database Replication</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch07/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch07/</guid><description>
+&lt;p&gt;&lt;a href="jnl_ext.html"&gt;Journal Extract Formats&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Chapter7.Database Replication</title><link>https://mumps.pl/manuals/ao/ch07/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch07/</guid><description>
 &lt;h2&gt;Chapter7.Database Replication&lt;span class="hx:absolute hx:-mt-20" id="chapter7database-replication"&gt;&lt;/span&gt;
 &lt;a href="#chapter7database-replication" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -887,7 +887,7 @@ special instructions before installing GT.M.&lt;/p&gt;</description></item><item
 &lt;p&gt;&lt;a href="replication.html#rep_curr_backlog"&gt;Reporting the Current Backlog of Journal Records&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href="replication.html#rollback_db_after_sys_fail"&gt;Rolling Back a Replicated Database&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
-&lt;/dl&gt;</description></item><item><title>Chapter8.M Lock Utility (LKE)</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/lkechap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/lkechap/</guid><description>
+&lt;/dl&gt;</description></item><item><title>Chapter8.M Lock Utility (LKE)</title><link>https://mumps.pl/manuals/ao/lkechap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/lkechap/</guid><description>
 &lt;h2&gt;Chapter8.M Lock Utility (LKE)&lt;span class="hx:absolute hx:-mt-20" id="chapter8m-lock-utility-lke"&gt;&lt;/span&gt;
 &lt;a href="#chapter8m-lock-utility-lke" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -910,7 +910,7 @@ special instructions before installing GT.M.&lt;/p&gt;</description></item><item
 &lt;dd&gt;&lt;a href="lke_exercises.html#lke_exer1"&gt;Exercise 1: Preventing concurrent updates using M Locks&lt;/a&gt;
 &lt;p&gt;&lt;a href="lke_exercises.html#lke_exer2"&gt;Exercise 2: Rectifying a deadlock situation&lt;/a&gt;&lt;/p&gt;
 &lt;/dd&gt;
-&lt;/dl&gt;</description></item><item><title>Chapter9.GT.M Database Structure(GDS)</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch09/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch09/</guid><description>
+&lt;/dl&gt;</description></item><item><title>Chapter9.GT.M Database Structure(GDS)</title><link>https://mumps.pl/manuals/ao/ch09/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch09/</guid><description>
 &lt;h2&gt;Chapter9.GT.M Database Structure(GDS)&lt;span class="hx:absolute hx:-mt-20" id="chapter9gtm-database-structuregds"&gt;&lt;/span&gt;
 &lt;a href="#chapter9gtm-database-structuregds" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
 &lt;dl&gt;
@@ -956,7 +956,7 @@ the unlikely event of getting database integrity issues.&lt;/p&gt;
 &lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Commands and Qualifiers</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gdm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gdm/</guid><description>
+&lt;/table&gt;</description></item><item><title>Commands and Qualifiers</title><link>https://mumps.pl/manuals/ao/gdm/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/gdm/</guid><description>
 &lt;h2&gt;Commands and Qualifiers&lt;span class="hx:absolute hx:-mt-20" id="commands-and-qualifiers"&gt;&lt;/span&gt;
 &lt;a href="#commands-and-qualifiers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The MUPIP commands described in this section are used for common database operations and serves as the foundation for more advanced functionality like Journaling and Replication.&lt;/p&gt;
 &lt;h3&gt;BACKUP&lt;span class="hx:absolute hx:-mt-20" id="backup"&gt;&lt;/span&gt;
@@ -6695,7 +6695,7 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;This example starts the first stage of the upgrade of mumps.dat to V7 format.&lt;/p&gt;</description></item><item><title>Commands and Qualifiers</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/replication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/replication/</guid><description>
+&lt;p&gt;This example starts the first stage of the upgrade of mumps.dat to V7 format.&lt;/p&gt;</description></item><item><title>Commands and Qualifiers</title><link>https://mumps.pl/manuals/ao/replication/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/replication/</guid><description>
 &lt;h2&gt;Commands and Qualifiers&lt;span class="hx:absolute hx:-mt-20" id="commands-and-qualifiers"&gt;&lt;/span&gt;
 &lt;a href="#commands-and-qualifiers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following MUPIP commands and qualifiers control database replication in a GT.M
 environment.&lt;/p&gt;
@@ -8298,7 +8298,7 @@ than the last consistent state, the database/journal files will be rolled
 back to the last consistent state. Under normal operating conditions, you
 would not need this qualifier.&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;-rsync_strm=&amp;lt;strm_num&amp;gt;&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Used when starting a rollback command with the -resync qualifier. The command mupip journal -rollback -resync=&amp;lt;sequence_num&amp;gt; -rsync_strm=&amp;lt;strm_num&amp;gt; instructs rollback to roll back the database to a sequence number specified with the -resync=&amp;lt;sequence_num&amp;gt; qualifier but that &amp;lt;sequence_num&amp;gt; is a journal stream sequence number (not a journal sequence number) corresponding to the stream number &amp;lt;strm_num&amp;gt; which can be any value from 0 to 15. Note that like the -resync qualifier, the -rsync_strm qualifier is also intended for use under the direction of your GT.M support channel.&lt;/p&gt;</description></item><item><title>Configuring and operating GT.M with Unicode support (optional)</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s03/</guid><description>
+&lt;p&gt;Used when starting a rollback command with the -resync qualifier. The command mupip journal -rollback -resync=&amp;lt;sequence_num&amp;gt; -rsync_strm=&amp;lt;strm_num&amp;gt; instructs rollback to roll back the database to a sequence number specified with the -resync=&amp;lt;sequence_num&amp;gt; qualifier but that &amp;lt;sequence_num&amp;gt; is a journal stream sequence number (not a journal sequence number) corresponding to the stream number &amp;lt;strm_num&amp;gt; which can be any value from 0 to 15. Note that like the -resync qualifier, the -rsync_strm qualifier is also intended for use under the direction of your GT.M support channel.&lt;/p&gt;</description></item><item><title>Configuring and operating GT.M with Unicode support (optional)</title><link>https://mumps.pl/manuals/ao/ch03s03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch03s03/</guid><description>
 &lt;h2&gt;Configuring and operating GT.M with Unicode support (optional)&lt;span class="hx:absolute hx:-mt-20" id="configuring-and-operating-gtm-with-unicode-support-optional"&gt;&lt;/span&gt;
 &lt;a href="#configuring-and-operating-gtm-with-unicode-support-optional" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The configure script provides the option to install GT.M with or without Unicode support for encoding international character sets. This section describes the system environment required to install and operate GT.M with Unicode support. Users who handle data in ASCII or other single-byte character sets such as one of the ISO-8859 representations and do not foresee any use of character sets beyond single byte character sets, may proceed to the next section.&lt;/p&gt;
 &lt;h3&gt;M mode and UTF-8 mode&lt;span class="hx:absolute hx:-mt-20" id="m-mode-and-utf-8-mode"&gt;&lt;/span&gt;
@@ -8378,7 +8378,7 @@ would not need this qualifier.&lt;/p&gt;
 &lt;li&gt;LC_ALL&lt;/li&gt;
 &lt;li&gt;LD_LIBRARY_PATH&lt;/li&gt;
 &lt;li&gt;TERM&lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Configuring huge pages for GT.M x86[-64] on Linux</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s05/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s05/</guid><description>
+&lt;/ol&gt;</description></item><item><title>Configuring huge pages for GT.M x86[-64] on Linux</title><link>https://mumps.pl/manuals/ao/ch03s05/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch03s05/</guid><description>
 &lt;h2&gt;Configuring huge pages for GT.M x86[-64] on Linux&lt;span class="hx:absolute hx:-mt-20" id="configuring-huge-pages-for-gtm-x86-64-on-linux"&gt;&lt;/span&gt;
 &lt;a href="#configuring-huge-pages-for-gtm-x86-64-on-linux" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Huge pages are a Linux feature that may improve the performance of GT.M applications in production. Huge pages create a single page table entry for a large block (typically 2MiB) of memory in place of hundreds entries for many smaller (typically 4KiB) blocks. This reduction of memory used for page tables frees memory for other uses, such as file system caches, and increases the probability of TLB (translation lookaside buffer) matches, both of which can improve performance. The performance improvement related to reducing the page table size becomes evident when many processes share memory as they do for global buffers, journal buffers, and replication journal pools. Configuring huge pages on Linux for x86 or x86_64 CPU architectures help improve:&lt;/p&gt;
 &lt;ol&gt;
@@ -8513,7 +8513,7 @@ data-copied-label="Copied!"
 &lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Configuring the Restriction facility</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s06/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s06/</guid><description>
+&lt;/table&gt;</description></item><item><title>Configuring the Restriction facility</title><link>https://mumps.pl/manuals/ao/ch03s06/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch03s06/</guid><description>
 &lt;h2&gt;Configuring the Restriction facility&lt;span class="hx:absolute hx:-mt-20" id="configuring-the-restriction-facility"&gt;&lt;/span&gt;
 &lt;a href="#configuring-the-restriction-facility" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Post installation, a system administrator can optionally add a restrict.txt file in $gtm_dist to restrict the use of certain GT.M facilities to a group-name. The owner and group for $gtm_dist/restrict.txt can be different from those used to install GT.M. The file may contain zero or more of the following case-insensitive lines in any order:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
@@ -9051,12 +9051,12 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;This example demonstrates the audit logging with APD_ENABLE:RD facility. Logging activity shows that PID 987654 and PID 123456 ran two Direct Mode commands - write &amp;ldquo;Hello world&amp;rdquo;,! and read num. The response from PID 123456 for read num was 7.&lt;/p&gt;</description></item><item><title>Conventions Used in This Manual</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/pr01s06/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/pr01s06/</guid><description>
+&lt;p&gt;This example demonstrates the audit logging with APD_ENABLE:RD facility. Logging activity shows that PID 987654 and PID 123456 ran two Direct Mode commands - write &amp;ldquo;Hello world&amp;rdquo;,! and read num. The response from PID 123456 for read num was 7.&lt;/p&gt;</description></item><item><title>Conventions Used in This Manual</title><link>https://mumps.pl/manuals/ao/pr01s06/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/pr01s06/</guid><description>
 &lt;h2&gt;Conventions Used in This Manual&lt;span class="hx:absolute hx:-mt-20" id="conventions-used-in-this-manual"&gt;&lt;/span&gt;
 &lt;a href="#conventions-used-in-this-manual" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;Use GT.M with any UNIX shell as long as environment variables and scripts are consistently created for that shell. In this manual, UNIX examples are validated on Ubuntu Linux (Ubuntu Linux uses &lt;code&gt;dash&lt;/code&gt; for &lt;code&gt;/bin/sh&lt;/code&gt;).Examples in later chapters assume that an environment has been set up as described in the chapters &lt;a href="ch02.html"title="Chapter2.Installing GT.M"&gt;Chapter2: “&lt;em&gt;Installing GT.M&lt;/em&gt;”&lt;/a&gt; and &lt;a href="ch03.html"title="Chapter3.Basic Operations"&gt;Chapter3: “&lt;em&gt;Basic Operations&lt;/em&gt;”&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;FIS made a conscientious effort to present intuitive examples and related error messages that appear if a user tries those examples. However, due to environment and shell differences, you may occasionally obtain different results (although the differences should be relatively minor). Therefore, FIS suggests that you try the examples in a database environment that does not contain any valued information.&lt;/p&gt;
 &lt;p&gt;In M examples, an effort was made to construct examples where command lines did not wrap, in many cases using the argumentless DO.&lt;/p&gt;
-&lt;p&gt;The examples make frequent use of literals in an attempt to focus attention on particular points. In normal usage arguments are far more frequently variables.&lt;/p&gt;</description></item><item><title>Database File Organization with GDS</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch09s01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch09s01/</guid><description>
+&lt;p&gt;The examples make frequent use of literals in an attempt to focus attention on particular points. In normal usage arguments are far more frequently variables.&lt;/p&gt;</description></item><item><title>Database File Organization with GDS</title><link>https://mumps.pl/manuals/ao/ch09s01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch09s01/</guid><description>
 &lt;h2&gt;Database File Organization with GDS&lt;span class="hx:absolute hx:-mt-20" id="database-file-organization-with-gds"&gt;&lt;/span&gt;
 &lt;a href="#database-file-organization-with-gds" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;GT.M processes a GDS file using predominantly low-level system services. The GDS file consists of two parts:&lt;/p&gt;
 &lt;ul&gt;
@@ -9357,14 +9357,14 @@ they appear in the file header.&lt;/p&gt;
 &lt;td&gt;One of the parameters used by GT.M to manage the database is the flush trigger. One of several conditions that triggers normal GT.M processes to initiate flushing dirty buffers from the database global buffer cache is when the number of dirty buffers crosses the flush trigger. In an attempt to never require the update process itself to flush dirty buffers, when the number of dirty global buffers crosses the update writer trigger factor percentage of the flush trigger value, writer helper processes start flushing dirty buffers to disk. It can have any integer value between 0 to 100. The default value is 33, that is, 33%.&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Database Integrity</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch01s07/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch01s07/</guid><description>
+&lt;/table&gt;</description></item><item><title>Database Integrity</title><link>https://mumps.pl/manuals/ao/ch01s07/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch01s07/</guid><description>
 &lt;h2&gt;Database Integrity&lt;span class="hx:absolute hx:-mt-20" id="database-integrity"&gt;&lt;/span&gt;
 &lt;a href="#database-integrity" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;GT.M tools verify and maintain database integrity. As described in &lt;a href="ch11.html"title="Chapter11.Maintaining Database Integrity"&gt;Chapter11: “&lt;em&gt;Maintaining Database Integrity&lt;/em&gt;”&lt;/a&gt;, database integrity refers to a state of logical and physical consistency in the database
 when all of the globals and pointers are correct, thereby making all data
 accessible. &lt;a href="ch11.html"title="Chapter11.Maintaining Database Integrity"&gt;Chapter11&lt;/a&gt;
 describes how to use the MUPIP INTEG command and the DSE utility to detect and
 repair integrity problems, and supplies procedures for avoiding such
-problems.&lt;/p&gt;</description></item><item><title>Database Structure</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch09s04/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch09s04/</guid><description>
+problems.&lt;/p&gt;</description></item><item><title>Database Structure</title><link>https://mumps.pl/manuals/ao/ch09s04/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch09s04/</guid><description>
 &lt;h2&gt;Database Structure&lt;span class="hx:absolute hx:-mt-20" id="database-structure"&gt;&lt;/span&gt;
 &lt;a href="#database-structure" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The GT.M database structure is hierarchical, based on a form of balanced tree called a B-star tree (B*-tree) structure.
 The B*-tree contains blocks that are either index or data blocks. An index block contains pointers used to locate data in
@@ -9712,7 +9712,7 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;Note that since there are odd number of digits, GT.M appends zero (0) to mantissa and one (1) to each byte in mantissa.&lt;/p&gt;</description></item><item><title>Database Subsystem</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch01s05/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch01s05/</guid><description>
+&lt;p&gt;Note that since there are odd number of digits, GT.M appends zero (0) to mantissa and one (1) to each byte in mantissa.&lt;/p&gt;</description></item><item><title>Database Subsystem</title><link>https://mumps.pl/manuals/ao/ch01s05/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch01s05/</guid><description>
 &lt;h2&gt;Database Subsystem&lt;span class="hx:absolute hx:-mt-20" id="database-subsystem"&gt;&lt;/span&gt;
 &lt;a href="#database-subsystem" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The GT.M database subsystem consists of a run-time library and a set of
 utilities which operate on one or more user-specified Global Directories (GD)
@@ -9729,7 +9729,7 @@ directories.&lt;/p&gt;
 &lt;p&gt;In addition to mapping global variables to database files, global directories
 also store initial parameters used by the MUPIP CREATE command when creating new
 database files. GT.M uses environment variables to locate the global directory
-or, optionally database files.&lt;/p&gt;</description></item><item><title>Database Upgrade Matrix</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/aphs01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/aphs01/</guid><description>
+or, optionally database files.&lt;/p&gt;</description></item><item><title>Database Upgrade Matrix</title><link>https://mumps.pl/manuals/ao/aphs01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/aphs01/</guid><description>
 &lt;h2&gt;Database Upgrade Matrix&lt;span class="hx:absolute hx:-mt-20" id="database-upgrade-matrix"&gt;&lt;/span&gt;
 &lt;a href="#database-upgrade-matrix" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
@@ -9853,7 +9853,7 @@ or, optionally database files.&lt;/p&gt;</description></item><item><title>Databa
 &lt;td&gt;No change&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>Defensive Practices</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apfs03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apfs03/</guid><description>
+&lt;/table&gt;</description></item><item><title>Defensive Practices</title><link>https://mumps.pl/manuals/ao/apfs03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/apfs03/</guid><description>
 &lt;h2&gt;Defensive Practices&lt;span class="hx:absolute hx:-mt-20" id="defensive-practices"&gt;&lt;/span&gt;
 &lt;a href="#defensive-practices" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following practices, some of which are illustrated in &lt;a href="apfs01.html#sample_profile"title="Sample .profile"&gt;“Sample .profile”&lt;/a&gt;, help provide layered defenses:&lt;/p&gt;
 &lt;ol&gt;
@@ -9890,7 +9890,7 @@ data-copied-label="Copied!"
 &lt;li&gt;
 &lt;p&gt;Because some text editors include functionality to run a shell in an edit buffer, setting the EDITOR variable to an editor which does not have such functionality is a way to block shell access in the event the application uses the ZEDIT command to edit a text file. Note that if an application allows users to edit text files, they can also edit GT.M program source files, and application configuration should ensure that such program files cannot be accessed by the $ZROUTINES of the process unless that is the desired behavior.&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ol&gt;</description></item><item><title>Downloadables</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/downloadables/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/downloadables/</guid><description/></item><item><title>DSE Command Summary</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch10s03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch10s03/</guid><description>
+&lt;/ol&gt;</description></item><item><title>Downloadables</title><link>https://mumps.pl/manuals/ao/downloadables/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/downloadables/</guid><description/></item><item><title>DSE Command Summary</title><link>https://mumps.pl/manuals/ao/ch10s03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch10s03/</guid><description>
 &lt;h2&gt;DSE Command Summary&lt;span class="hx:absolute hx:-mt-20" id="dse-command-summary"&gt;&lt;/span&gt;
 &lt;a href="#dse-command-summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
 &lt;thead&gt;
@@ -10583,7 +10583,7 @@ data-copied-label="Copied!"
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;* Use these qualifiers only with instructions from FIS.&lt;/p&gt;</description></item><item><title>DSE Commands and Qualifiers</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/dse_cmmds_quals/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/dse_cmmds_quals/</guid><description>
+&lt;p&gt;* Use these qualifiers only with instructions from FIS.&lt;/p&gt;</description></item><item><title>DSE Commands and Qualifiers</title><link>https://mumps.pl/manuals/ao/dse_cmmds_quals/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/dse_cmmds_quals/</guid><description>
 &lt;h2&gt;DSE Commands and Qualifiers&lt;span class="hx:absolute hx:-mt-20" id="dse-commands-and-qualifiers"&gt;&lt;/span&gt;
 &lt;a href="#dse-commands-and-qualifiers" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The general format of DSE commands is:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
@@ -13297,7 +13297,7 @@ data-copied-label="Copied!"
 &lt;li&gt;
 &lt;p&gt;WCINIT operations are more safely performed by MUPIP RUNDOWN. Use this command only under instructions from FIS.&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>Environment Variables</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch03s02/</guid><description>
+&lt;/ul&gt;</description></item><item><title>Environment Variables</title><link>https://mumps.pl/manuals/ao/ch03s02/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch03s02/</guid><description>
 &lt;h2&gt;Environment Variables&lt;span class="hx:absolute hx:-mt-20" id="environment-variables"&gt;&lt;/span&gt;
 &lt;a href="#environment-variables" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;A comprehensive list of environment variables that are directly or indirectly used by GT.M are as follows:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;EDITOR&lt;/strong&gt; is a standard system environment variable that specifies the full path to the editor to be invoked by GT.M in response to the ZEDit command (defaults to vi, if $EDITOR is not set).&lt;/p&gt;
@@ -13590,7 +13590,7 @@ maximum time that a GT.M process waits for non-Isolated or timed command (HANG, 
 &lt;li&gt;A GT.M version has an associated &lt;code&gt;gtmsecshr&lt;/code&gt; (located by &lt;code&gt;$gtm_dist&lt;/code&gt;). If multiple processes are accessing the same GT.M version, each process must use the same &lt;code&gt;$gtm_tmp&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;The &lt;code&gt;gtmprofile&lt;/code&gt; script sets &lt;code&gt;$gtm_tmp&lt;/code&gt; to &lt;code&gt;/tmp/fis-gtm/$gtmver.&lt;/code&gt; On production systems, set $gtm_tmp as described earlier in this section.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Always set the same value of &lt;code&gt;$gtm_tmp&lt;/code&gt; for all processes using the same GT.M version. Having different &lt;code&gt;$gtm_tmp&lt;/code&gt; for multiple processes accessing the same GT.M version may prevent processes from being able to communicate with &lt;code&gt;gtmsecshr&lt;/code&gt; and cause performance issues.&lt;/p&gt;</description></item><item><title>Examining GT.M's IPC Resources</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apas01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apas01/</guid><description>
+&lt;p&gt;Always set the same value of &lt;code&gt;$gtm_tmp&lt;/code&gt; for all processes using the same GT.M version. Having different &lt;code&gt;$gtm_tmp&lt;/code&gt; for multiple processes accessing the same GT.M version may prevent processes from being able to communicate with &lt;code&gt;gtmsecshr&lt;/code&gt; and cause performance issues.&lt;/p&gt;</description></item><item><title>Examining GT.M's IPC Resources</title><link>https://mumps.pl/manuals/ao/apas01/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/apas01/</guid><description>
 &lt;h2&gt;Examining GT.M&amp;rsquo;s IPC Resources&lt;span class="hx:absolute hx:-mt-20" id="examining-gtms-ipc-resources"&gt;&lt;/span&gt;
 &lt;a href="#examining-gtms-ipc-resources" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;GT.M uses UNIX IPC resources as follows:&lt;/p&gt;
 &lt;ul&gt;
@@ -14006,7 +14006,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;code&gt;Brazil&lt;/code&gt; has 1 region and its receiver server is listening to &lt;code&gt;America&lt;/code&gt;, therefore as per the formula for calculating GT.M IPC resources, the total IPCs utilized by GT.M is: 5 &lt;code&gt;[1 * 3 + 1 + 1]&lt;/code&gt;.&lt;/p&gt;</description></item><item><title>Examples of use</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch12s03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch12s03/</guid><description>
+&lt;p&gt;&lt;code&gt;Brazil&lt;/code&gt; has 1 region and its receiver server is listening to &lt;code&gt;America&lt;/code&gt;, therefore as per the formula for calculating GT.M IPC resources, the total IPCs utilized by GT.M is: 5 &lt;code&gt;[1 * 3 + 1 + 1]&lt;/code&gt;.&lt;/p&gt;</description></item><item><title>Examples of use</title><link>https://mumps.pl/manuals/ao/ch12s03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch12s03/</guid><description>
 &lt;h2&gt;Examples of use&lt;span class="hx:absolute hx:-mt-20" id="examples-of-use"&gt;&lt;/span&gt;
 &lt;a href="#examples-of-use" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The commands here are all line oriented to illustrate that they can be automated by being called from GT.M or from a shell script. For interactive use, there are many graphical user interfaces (GUIs) usable with GPG. Although these examples were generated on Linux, usage on other UNIX systems should be virtually identical.&lt;/p&gt;
 &lt;h3&gt;Key Management&lt;span class="hx:absolute hx:-mt-20" id="key-management"&gt;&lt;/span&gt;
@@ -14337,7 +14337,7 @@ data-copied-label="Copied!"
 &lt;hr&gt;
 &lt;p&gt;[&lt;a href="ch12s03.html#id26299"&gt;5&lt;/a&gt;] This step can be omitted if they already have GPG keyrings and public and private keys. However, see the section below on operation with Gnu Privacy Guard version 2.&lt;/p&gt;
 &lt;p&gt;[&lt;a href="ch12s03.html#id26301"&gt;6&lt;/a&gt;] Generatng a public-private keypair can consume a significant amount of the entropy in a computer system. Running out of entropy can cause the operation to stall until sufficient entropy becomes available. You may need to consider external entropy sources or entropy gathering daemons for computer systems on which key generation will occur frequently. For encrypted databases on virtual machines, you may need to generate public-private keypairs on host computers and then ship the keyrings to the virtual guests.&lt;/p&gt;
-&lt;p&gt;[&lt;a href="ch12s03.html#id26303"&gt;7&lt;/a&gt;] One alternative to direct sending of of public keys is to upload them to a keyserver, such as the MIT PGP Public Key Server at &lt;a href="http://pgp.mit.edu"target="_blank" rel="noopener"&gt;http://pgp.mit.edu&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Finding and Fixing Database Errors</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch11s04/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/ch11s04/</guid><description>
+&lt;p&gt;[&lt;a href="ch12s03.html#id26303"&gt;7&lt;/a&gt;] One alternative to direct sending of of public keys is to upload them to a keyserver, such as the MIT PGP Public Key Server at &lt;a href="http://pgp.mit.edu"target="_blank" rel="noopener"&gt;http://pgp.mit.edu&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Finding and Fixing Database Errors</title><link>https://mumps.pl/manuals/ao/ch11s04/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/ch11s04/</guid><description>
 &lt;h2&gt;Finding and Fixing Database Errors&lt;span class="hx:absolute hx:-mt-20" id="finding-and-fixing-database-errors"&gt;&lt;/span&gt;
 &lt;a href="#finding-and-fixing-database-errors" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The rest of this chapter is arranged loosely in the form of a decision tree. The
 material covers a wide range of scenarios and possible actions.&lt;/p&gt;
@@ -15897,7 +15897,7 @@ successfully. However, if updating processes exit in a fashion that does not
 permit them to flush out modified records, the read-only process (particularly
 one doing a large transaction) may fail because the cache cannot supply enough
 blocks. This condition can be cleared by a DSE BUFFER command in the affected
-region(s).&lt;/p&gt;</description></item><item><title>GDE Command Summary</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gde_cmmd_summ/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gde_cmmd_summ/</guid><description>
+region(s).&lt;/p&gt;</description></item><item><title>GDE Command Summary</title><link>https://mumps.pl/manuals/ao/gde_cmmd_summ/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/gde_cmmd_summ/</guid><description>
 &lt;h2&gt;GDE Command Summary&lt;span class="hx:absolute hx:-mt-20" id="gde-command-summary"&gt;&lt;/span&gt;
 &lt;a href="#gde-command-summary" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following table summarizes GDE commands, abbreviations, object types, required
 object names, and optional qualifiers.&lt;/p&gt;
@@ -16415,7 +16415,7 @@ TEMPLATE commands. The defaults are those supplied by FIS.&lt;/p&gt;
 &lt;td&gt;X&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>GDE Overview</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gde_overview/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gde_overview/</guid><description>
+&lt;/table&gt;</description></item><item><title>GDE Overview</title><link>https://mumps.pl/manuals/ao/gde_overview/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/gde_overview/</guid><description>
 &lt;h2&gt;GDE Overview&lt;span class="hx:absolute hx:-mt-20" id="gde-overview"&gt;&lt;/span&gt;
 &lt;a href="#gde-overview" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The GT.M Global Directory Editor (GDE) is a utility for creating, examining, and modifying a global directory. GDE is a program written in M and you can invoke it from the shell with &lt;code&gt;$gtm_dist/mumps -run ^GDE&lt;/code&gt;. If you invoke it from the shell, GDE returns a status indicating success (0) or an issue (non-zero).&lt;/p&gt;
 &lt;p&gt;Because GDE is an M program, you can also invoke GDE from a GT.M process with &lt;code&gt;DO ^GDE&lt;/code&gt;. If you invoke GDE with a DO and modify the map of global directly currently opened by that process, you must HALT and restart the process for the process to pick up the revised mapping. FIS expects users normally run GDE from the shell &amp;ndash;&lt;code&gt;$gtm_dist/mumps -run GDE&lt;/code&gt;.&lt;/p&gt;
@@ -16722,7 +16722,7 @@ data-copied-label="Copied!"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;For more information about journaling, see the section on the JOURNAL
-qualifier in this chapter and &lt;a href="journaling.html"title="Chapter6.GT.M Journaling"&gt;Chapter6: “&lt;em&gt;GT.M Journaling&lt;/em&gt;”&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Generating demo TLS certificates</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apgs03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/apgs03/</guid><description>
+qualifier in this chapter and &lt;a href="journaling.html"title="Chapter6.GT.M Journaling"&gt;Chapter6: “&lt;em&gt;GT.M Journaling&lt;/em&gt;”&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>Generating demo TLS certificates</title><link>https://mumps.pl/manuals/ao/apgs03/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/apgs03/</guid><description>
 &lt;h2&gt;Generating demo TLS certificates&lt;span class="hx:absolute hx:-mt-20" id="generating-demo-tls-certificates"&gt;&lt;/span&gt;
 &lt;a href="#generating-demo-tls-certificates" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The following sections contains the steps for quick-start creation/signing of certificates for running the Database Encryption, TLS Replication, and/or TLS sockets examples. These steps are for demonstration/training purpose only and should never be used in production. The steps you might use in your environment and the certificate operations related to creation, signing, renewal, revocation, placement, protection, etc. should be a part of a comprehensive security plan that aligns with the security needs of your organization.&lt;/p&gt;
 &lt;h3&gt;Creating a demo CA (Certification Authority)&lt;span class="hx:absolute hx:-mt-20" id="creating-a-demo-ca-certification-authority"&gt;&lt;/span&gt;
@@ -17096,7 +17096,7 @@ data-copied-label="Copied!"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;Enter blank values or example data as appropriate. You demo certificates are now ready for use in the documentation examples.&lt;/p&gt;</description></item><item><title>Global Director Editor Commands</title><link>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gdecmds/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://szydell.github.io/gtmdoc-mumps.pl/manuals/ao/gdecmds/</guid><description>
+&lt;p&gt;Enter blank values or example data as appropriate. You demo certificates are now ready for use in the documentation examples.&lt;/p&gt;</description></item><item><title>Global Director Editor Commands</title><link>https://mumps.pl/manuals/ao/gdecmds/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://mumps.pl/manuals/ao/gdecmds/</guid><description>
 &lt;h2&gt;Global Director Editor Commands&lt;span class="hx:absolute hx:-mt-20" id="global-director-editor-commands"&gt;&lt;/span&gt;
 &lt;a href="#global-director-editor-commands" class="subheading-anchor" aria-label="Permalink for this section"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This section describes GDE commands. GDE allows abbreviations of commands. The
 section describing each command provides the minimum abbreviation for that command
